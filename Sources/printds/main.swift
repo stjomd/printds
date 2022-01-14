@@ -1,3 +1,10 @@
+//
+//  main.swift
+//
+//
+//  Created by Artem Zhukov on 14.01.22.
+//
+
 import ArgumentParser
 
 struct App: ParsableCommand {
@@ -10,6 +17,10 @@ struct App: ParsableCommand {
 
     @Argument(help: "The path to the document.")
     var input: String
+    
+    mutating func run() throws {
+        print("Hello world!")
+    }
     
 }
 
