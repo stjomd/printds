@@ -6,6 +6,7 @@
 //
 
 import ArgumentParser
+import PDFKit
 
 struct App: ParsableCommand {
     
@@ -18,9 +19,18 @@ struct App: ParsableCommand {
     @Argument(help: "The path to the document.")
     var input: String
     
+    private var documentService: DocumentService = DocumentService()
     private var printService: PrintService = PrintService()
     mutating func run() throws {
-        printService.go(path: input)
+        do {
+            let url = try documentService.url(from: input)
+            let document = PDFDocument(url: url)!
+            let split = documentService.split(document)
+            try printService.print(split.odd)
+            try printService.print(split.even)
+        } catch Exception.exception(let message) {
+            print("Errorx: \(message)")
+        }
     }
     
 }
