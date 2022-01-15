@@ -13,6 +13,10 @@ class SplitPDFDocument {
     let odd: PDFDocument
     let even: PDFDocument
     
+    var pageCount: Int {
+        odd.pageCount
+    }
+    
     init(odd: PDFDocument, even: PDFDocument) {
         self.odd = odd
         self.even = even
