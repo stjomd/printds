@@ -10,6 +10,14 @@ import PDFKit
 
 class DocumentService: Decodable {
     
+    public func document(path: String) throws -> PDFDocument {
+        let url = try self.url(from: path)
+        guard let document = PDFDocument(url: url) else {
+            throw Exception.exception("Couldn't open the document")
+        }
+        return document
+    }
+    
     /// Splits a PDF document into two, ready for double-sided printing.
     /// - parameter document: The PDF document to be split.
     /// - returns: A SplitPDFDocument instance.
@@ -37,7 +45,7 @@ class DocumentService: Decodable {
     /// - parameter path: The path to a file, a string.
     /// - returns: The URL with the equivalent path.
     /// - throws: An exception is thrown if the URL cannot be constructed.
-    public func url(from path: String) throws -> URL {
+    private func url(from path: String) throws -> URL {
         guard let url = URL(string: "file://" + path) else {
             throw Exception.exception("Invalid file path")
         }

@@ -19,17 +19,14 @@ struct App: ParsableCommand {
     @Argument(help: "The path to the document.")
     var input: String
     
-    private var documentService: DocumentService = DocumentService()
-    private var printService: PrintService = PrintService()
+    // MARK: - Entry point
+    
+    private var communicator: Communicator = Communicator()
     mutating func run() throws {
         do {
-            let url = try documentService.url(from: input)
-            let document = PDFDocument(url: url)!
-            let split = documentService.split(document)
-            try printService.print(split.odd)
-            try printService.print(split.even)
+            try communicator.doublesided(input)
         } catch Exception.exception(let message) {
-            print("Errorx: \(message)")
+            print("Exception: \(message)")
         }
     }
     
