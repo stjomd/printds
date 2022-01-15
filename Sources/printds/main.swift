@@ -18,8 +18,9 @@ struct App: ParsableCommand {
     @Argument(help: "The path to the document.")
     var input: String
     
+    private var printService: PrintService = PrintService()
     mutating func run() throws {
-        print("Hello world!")
+        printService.go(path: input)
     }
     
 }
