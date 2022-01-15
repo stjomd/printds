@@ -10,6 +10,10 @@ import PDFKit
 
 class DocumentService: Decodable {
     
+    /// Loads a PDF document from a specifie path.
+    /// - parameter path: The path to the document.
+    /// - returns: A PDFDocument instance.
+    /// - throws: An exception is thrown if the document couldn't be loaded (invalid path, nonexistent file, etc.)
     public func document(path: String) throws -> PDFDocument {
         let url = try self.url(from: path)
         guard let document = PDFDocument(url: url) else {
