@@ -40,7 +40,6 @@ class DocumentService: Decodable {
             } else {
                 docs.1.insert(document.page(at: count - shift - i)!, at: docs.1.pageCount)
             }
-            usleep(150000) // doesn't work otherwise :(
         }
         return SplitPDFDocument(odd: docs.0, even: docs.1)
     }
