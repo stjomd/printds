@@ -8,5 +8,5 @@
 import Foundation
 
 enum Exception: Error {
-    case exception(String)
+    case because(String)
 }

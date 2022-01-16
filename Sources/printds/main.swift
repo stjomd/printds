@@ -41,7 +41,7 @@ struct App: ParsableCommand {
             } else {
                 try communicator.doublesided(input: input, output: output)
             }
-        } catch Exception.exception(let message) {
+        } catch Exception.because(let message) {
             console.error("Exception: \(message)")
         }
     }

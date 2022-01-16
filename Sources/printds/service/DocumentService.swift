@@ -19,7 +19,7 @@ class DocumentService: Decodable {
     public func document(path: String) throws -> PDFDocument {
         let url = try fileService.locate(path)
         guard let document = PDFDocument(url: url) else {
-            throw Exception.exception("Couldn't open the document")
+            throw Exception.because("Couldn't open the document")
         }
         return document
     }
