@@ -28,6 +28,12 @@ class FileService: Decodable {
         }
     }
     
+    /// Writes a document to the disk.
+    /// - parameters:
+    ///   - document: The document to be saved.
+    ///   - name: The name of the document.
+    ///   - path: The path (a directory) where the document should be saved.
+    /// - throws: An exception is thrown if the path couldn't be found, or if the path is not a directory.
     public func save(_ document: PDFDocument, named name: String, to path: String) throws {
         let directoryUrl = try self.locate(path)
         if try self.isDirectory(at: directoryUrl) {
@@ -50,6 +56,10 @@ class FileService: Decodable {
         return url
     }
     
+    /// Checks whether the path specidied by a URL is a directory.
+    /// - parameter url: The URL to be checked.
+    /// - returns: `true` if the path is a directory, and `false` otherwise.
+    /// - throws: An exception is thrown if the check couldn't be performed.
     private func isDirectory(at url: URL) throws -> Bool {
         if let check = try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory {
             return check

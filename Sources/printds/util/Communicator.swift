@@ -61,6 +61,9 @@ class Communicator: Decodable {
     
     // MARK: - Helpers
     
+    /// Retrieves the name of a file or directory from a path string.
+    /// - parameter path: The path to the file or directory.
+    /// - returns: The name, or an empty string if it couldn't be determined.
     private func name(from path: String) -> String {
         var dotIndex = path.endIndex
         for i in stride(from: path.count - 1, to: 0, by: -1) {
