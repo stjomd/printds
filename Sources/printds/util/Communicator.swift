@@ -26,7 +26,7 @@ class Communicator: Decodable {
         let document = try documentService.document(path: path)
         let split = documentService.split(document)
         
-        console.info("You will need \(split.pageCount) sheet\(split.pageCount == 1 ? "s" : "") of paper.")
+        console.info("You will need \(split.pageCount) sheet\(split.pageCount == 1 ? "" : "s") of paper.")
         
         try printService.print(split.odd)
         
