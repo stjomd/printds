@@ -62,7 +62,7 @@ class DocumentService: Decodable {
     /// - returns: A URL associated with the file.
     /// - throws: An exception is thrown if the file couldn't be found.
     private func locate(_ path: String) throws -> URL {
-        let globalUrl = try self.url(from: path)
+        let globalUrl = try self.url(from: "~").appendingPathComponent(path)
         let localUrl = try self.url(from: FileManager.default.currentDirectoryPath).appendingPathComponent(path)
         if FileManager.default.fileExists(atPath: localUrl.path) {
             return localUrl
