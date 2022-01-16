@@ -34,9 +34,11 @@ class Communicator: Decodable {
         console.info("You will need \(split.pageCount) \(noun) of paper.")
         // Start printing/saving
         if let output = output {
-            try fileService.save(split.odd, named: "x-odd.pdf", to: output)
-            try fileService.save(split.even, named: "x-even.pdf", to: output)
-            console.info("First print the odd pages, then the even ones.")
+            let name = self.name(from: input)
+            let (oddName, evenName) = ("\(name)-odd.pdf", "\(name)-even.pdf")
+            try fileService.save(split.odd, named: oddName, to: output)
+            try fileService.save(split.even, named: evenName, to: output)
+            console.info("First print \(oddName), then \(evenName).")
         } else {
             try printService.print(split.odd)
             console.info("Turn the printed pages over, and insert them into the paper tray.")
@@ -55,8 +57,29 @@ class Communicator: Decodable {
     public func singlesided(input: String, output: String?) throws {
         let document = try documentService.document(path: input)
         console.info("You will need \(document.pageCount) sheet\(document.pageCount == 1 ? "" : "s") of paper.")
-        try printService.print(document)
+        if let output = output {
+            let name = self.name(from: input)
+            try fileService.save(document, named: "\(name)-out.pdf", to: output)
+        } else {
+            try printService.print(document)
+        }
         console.success("Done.")
+    }
+    
+    // MARK: - Helpers
+    
+    private func name(from path: String) -> String {
+        var dotIndex = path.endIndex
+        for i in stride(from: path.count - 1, to: 0, by: -1) {
+            let index = path.index(path.startIndex, offsetBy: i)
+            if path[index] == "." {
+                dotIndex = index
+            } else if path[index] == "/" {
+                let cutIndex = path.index(index, offsetBy: 1)
+                return String(path[cutIndex..<dotIndex])
+            }
+        }
+        return ""
     }
     
 }
