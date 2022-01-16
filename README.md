@@ -1,6 +1,6 @@
 # printds
 
-A utility for macOS to help with manual printing.
+A utility for macOS to help with manual duplex printing.
 
 ## Description
 
