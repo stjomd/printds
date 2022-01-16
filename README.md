@@ -31,7 +31,7 @@ Print `document.pdf` in single-sided mode:
 printds -s document.pdf
 ```
 
-Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory `~/Desktop`, to be printed later.
+Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory `~/Desktop`, to be printed later:
 ```
 printds document.pdf -o ~/Desktop
 ```
