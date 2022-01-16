@@ -21,10 +21,12 @@ class Communicator: Decodable {
     /// - parameter path: The path to the document to be printed.
     /// - throws: If an error occurs during execution.
     public func doublesided(_ path: String) throws {
+        console.log("Processing...")
+        
         let document = try documentService.document(path: path)
         let split = documentService.split(document)
         
-        console.info("You will need \(split.pageCount) sheets of paper.")
+        console.info("You will need \(split.pageCount) sheet\(split.pageCount == 1 ? "s" : "") of paper.")
         
         try printService.print(split.odd)
         
