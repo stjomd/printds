@@ -29,10 +29,17 @@ struct App: ParsableCommand {
     @Argument(help: "The path to the document.")
     var input: String
     
+    @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
+    var single: Bool = false
+    
     // MARK: - Entry point
     mutating func run() throws {
         do {
-            try communicator.doublesided(input)
+            if (single) {
+                try communicator.singlesided(input)
+            } else {
+                try communicator.doublesided(input)
+            }
         } catch Exception.exception(let message) {
             console.error("Exception: \(message)")
         }
