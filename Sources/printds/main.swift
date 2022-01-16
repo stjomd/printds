@@ -31,6 +31,9 @@ struct App: ParsableCommand {
     @Argument(help: "The path to the document.")
     var input: String
     
+    @Option(name: .shortAndLong, help: "The directory to save files to instead of printing.")
+    var output: String?
+    
     @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
     var single: Bool = false
     
@@ -39,9 +42,9 @@ struct App: ParsableCommand {
     mutating func run() throws {
         do {
             if (single) {
-                try communicator.singlesided(input)
+                try communicator.singlesided(input: input, output: output)
             } else {
-                try communicator.doublesided(input)
+                try communicator.doublesided(input: input, output: output)
             }
         } catch Exception.exception(let message) {
             console.error("Exception: \(message)")

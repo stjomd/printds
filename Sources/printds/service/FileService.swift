@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PDFKit
 
 class FileService: Decodable {
     
@@ -27,6 +28,17 @@ class FileService: Decodable {
         }
     }
     
+    public func save(_ document: PDFDocument, named name: String, to path: String) throws {
+        let directoryUrl = try self.locate(path)
+        if try self.isDirectory(at: directoryUrl) {
+            document.write(to: directoryUrl.appendingPathComponent(name))
+        } else {
+            throw Exception.exception("The output path is not a directory.")
+        }
+    }
+    
+    // MARK: - Helpers
+    
     /// Creates a URL instance from a path string.
     /// - parameter path: The path to a file, a string.
     /// - returns: The URL with the equivalent path.
@@ -36,6 +48,14 @@ class FileService: Decodable {
             throw Exception.exception("Invalid file path")
         }
         return url
+    }
+    
+    private func isDirectory(at url: URL) throws -> Bool {
+        if let check = try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory {
+            return check
+        } else {
+            throw Exception.exception("Couldn't check whether the path is a directory.")
+        }
     }
     
 }
