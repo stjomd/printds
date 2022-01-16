@@ -10,6 +10,16 @@ import PDFKit
 
 struct App: ParsableCommand {
     
+    // MARK: - Dependencies
+    private var console: Console
+    private var communicator: Communicator
+    
+    init() {
+        self.console = Console()
+        self.communicator = Communicator(console: console)
+    }
+    
+    // MARK: - Argument parsing
     static var configuration = CommandConfiguration(
         commandName: "printds",
         abstract: "Print double sided documents manually with ease.",
@@ -20,13 +30,11 @@ struct App: ParsableCommand {
     var input: String
     
     // MARK: - Entry point
-    
-    private var communicator: Communicator = Communicator()
     mutating func run() throws {
         do {
             try communicator.doublesided(input)
         } catch Exception.exception(let message) {
-            print("Exception: \(message)")
+            console.error("Exception: \(message)")
         }
     }
     
