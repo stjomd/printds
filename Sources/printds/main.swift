@@ -11,6 +11,7 @@ import PDFKit
 struct App: ParsableCommand {
     
     // MARK: - Dependencies
+    
     private var console: Console
     private var communicator: Communicator
     
@@ -20,6 +21,7 @@ struct App: ParsableCommand {
     }
     
     // MARK: - Argument parsing
+    
     static var configuration = CommandConfiguration(
         commandName: "printds",
         abstract: "Print double sided documents manually with ease.",
@@ -33,6 +35,7 @@ struct App: ParsableCommand {
     var single: Bool = false
     
     // MARK: - Entry point
+    
     mutating func run() throws {
         do {
             if (single) {

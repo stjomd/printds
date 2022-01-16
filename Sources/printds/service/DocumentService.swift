@@ -10,12 +10,20 @@ import PDFKit
 
 class DocumentService: Decodable {
     
+    private var fileService: FileService
+    
+    init(fileService: FileService) {
+        self.fileService = fileService
+    }
+    
+    // MARK: - Public methods
+    
     /// Loads a PDF document from a specifie path.
     /// - parameter path: The path to the document.
     /// - returns: A PDFDocument instance.
     /// - throws: An exception is thrown if the document couldn't be loaded (invalid path, nonexistent file, etc.)
     public func document(path: String) throws -> PDFDocument {
-        let url = try self.locate(path)
+        let url = try fileService.locate(path)
         guard let document = PDFDocument(url: url) else {
             throw Exception.exception("Couldn't open the document")
         }
@@ -42,37 +50,6 @@ class DocumentService: Decodable {
             }
         }
         return SplitPDFDocument(odd: docs.0, even: docs.1)
-    }
-    
-    // MARK: - Helpers
-    
-    /// Creates a URL instance from a path string.
-    /// - parameter path: The path to a file, a string.
-    /// - returns: The URL with the equivalent path.
-    /// - throws: An exception is thrown if the URL cannot be constructed.
-    private func url(from path: String) throws -> URL {
-        guard let url = URL(string: "file://" + path) else {
-            throw Exception.exception("Invalid file path")
-        }
-        return url
-    }
-    
-    /// Checks whether a file specified by a path string exists in the local directory (current directory of the shell), or globally.
-    /// - parameter path: The path to the file, a string.
-    /// - returns: A URL associated with the file.
-    /// - throws: An exception is thrown if the file couldn't be found.
-    private func locate(_ path: String) throws -> URL {
-        let correctedPath = path.replacingOccurrences(of: "\\ ", with: " ")
-        let globalUrl = try self.url(from: "~").appendingPathComponent(correctedPath)
-        let localUrl = try self.url(from: FileManager.default.currentDirectoryPath)
-                               .appendingPathComponent(correctedPath)
-        if FileManager.default.fileExists(atPath: localUrl.path) {
-            return localUrl
-        } else if FileManager.default.fileExists(atPath: globalUrl.path) {
-            return globalUrl
-        } else {
-            throw Exception.exception("File not found")
-        }
     }
     
 }

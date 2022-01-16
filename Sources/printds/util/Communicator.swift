@@ -10,11 +10,15 @@ import Foundation
 class Communicator: Decodable {
     
     private var console: Console
-    private var documentService: DocumentService = DocumentService()
-    private var printService: PrintService = PrintService()
+    private var fileService: FileService
+    private var printService: PrintService
+    private var documentService: DocumentService
     
     init(console: Console) {
         self.console = console
+        self.fileService = FileService()
+        self.printService = PrintService()
+        self.documentService = DocumentService(fileService: fileService)
     }
     
     // MARK: - Execution modes
