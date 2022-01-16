@@ -75,7 +75,11 @@ class Communicator: Decodable {
                 return String(path[cutIndex..<dotIndex])
             }
         }
-        return ""
+        if dotIndex != path.endIndex {
+            return String(path[..<dotIndex])
+        } else {
+            return ""
+        }
     }
     
 }
