@@ -24,7 +24,7 @@ class FileService: Decodable {
         } else if FileManager.default.fileExists(atPath: globalUrl.path) {
             return globalUrl
         } else {
-            throw Exception.because("File not found")
+            throw Exception.because("The path \(path) doesn't exist.")
         }
     }
     
@@ -39,7 +39,7 @@ class FileService: Decodable {
         if try self.isDirectory(at: directoryUrl) {
             document.write(to: directoryUrl.appendingPathComponent(name))
         } else {
-            throw Exception.because("The output path is not a directory.")
+            throw Exception.because("The output path \(path) is not a directory.")
         }
     }
     
@@ -51,7 +51,7 @@ class FileService: Decodable {
     /// - throws: An exception is thrown if the URL cannot be constructed.
     private func url(from path: String) throws -> URL {
         guard let url = URL(string: "file://" + path) else {
-            throw Exception.because("Invalid file path")
+            throw Exception.because("Invalid path \(path).")
         }
         return url
     }
@@ -64,7 +64,7 @@ class FileService: Decodable {
         if let check = try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory {
             return check
         } else {
-            throw Exception.because("Couldn't check whether the path is a directory.")
+            throw Exception.because("Couldn't check whether the path \(url.path) is a directory.")
         }
     }
     

@@ -19,7 +19,7 @@ class PrintService: Decodable {
             scalingMode: .pageScaleNone,
             autoRotate: false
         ) else {
-            throw Exception.because("Couldn't retrieve a print operation object")
+            throw Exception.because("Couldn't retrieve a print operation object.")
         }
         operation.run()
     }
