@@ -7,10 +7,4 @@
 
 import Foundation
 
-Resolver.register(Console())
-Resolver.register(FileService())
-Resolver.register(PrintService())
-Resolver.register(DocumentService())
-Resolver.register(Communicator())
-
 App.main()

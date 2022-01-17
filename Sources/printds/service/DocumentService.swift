@@ -10,7 +10,13 @@ import PDFKit
 
 class DocumentService: Decodable {
     
-    @Resolved private var fileService: FileService!
+    private var fileService: FileService
+    
+    init(fileService: FileService) {
+        self.fileService = fileService
+    }
+    
+    // MARK: - Public methods
         
     /// Loads a PDF document from a specifie path.
     /// - parameters:

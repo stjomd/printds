@@ -6,14 +6,26 @@
 //
 
 import ArgumentParser
-import PDFKit
 
 struct App: ParsableCommand {
     
     // MARK: - Dependencies
     
-    @Resolved private var console: Console!
-    @Resolved private var communicator: Communicator!
+    private var console: Console
+    private var communicator: Communicator
+    
+    init() {
+        let console = Console()
+        let fileService = FileService()
+        // Inject
+        self.console = console
+        self.communicator = Communicator(
+            console: console,
+            fileService: fileService,
+            printService: PrintService(),
+            documentService: DocumentService(fileService: fileService)
+        )
+    }
     
     // MARK: - Argument parsing
     

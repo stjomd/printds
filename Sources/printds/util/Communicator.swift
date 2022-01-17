@@ -9,10 +9,20 @@ import Foundation
 
 class Communicator: Decodable {
     
-    @Resolved private var console: Console!
-    @Resolved private var fileService: FileService!
-    @Resolved private var printService: PrintService!
-    @Resolved private var documentService: DocumentService!
+    private var console: Console
+    private var fileService: FileService
+    private var printService: PrintService
+    private var documentService: DocumentService
+    
+    init(console: Console,
+         fileService: FileService, printService: PrintService, documentService: DocumentService) {
+        self.console = console
+        self.fileService = fileService
+        self.printService = printService
+        self.documentService = documentService
+    }
+    
+    // MARK: - Public Methods
         
     /// Runs the program in the doublesided mode.
     /// - parameter args: The arguments of the program's run.
