@@ -46,3 +46,17 @@ Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory
 ```
 printds document.pdf -o ~/Desktop
 ```
+
+## Installation
+You will need to compile the source code, after which you can either add the executable to `/usr/local/bin` or run
+it in any other directory.
+The code also comes with a shell script to aid with installation: if you've already downloaded the source code, run
+`sudo sh install.sh`.
+
+Otherwise, you can download the code and install immediately using the following command:
+```
+git clone https://github.com/stjomd/printds.git && sudo printds/install.sh && rm -rf printds
+```
+You will be prompted to enter your password.
+
+Note that you need the Swift compiler.
