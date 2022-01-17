@@ -1,5 +1,5 @@
 //
-//  DependencyResolver.swift
+//  Resolver.swift
 //  
 //
 //  Created by Artem Zhukov on 16.01.22.
@@ -8,17 +8,17 @@
 import Foundation
 
 @propertyWrapper
-struct Injected<T>: Decodable {
+struct Resolved<T>: Decodable {
     var wrappedValue: T? {
-        DependencyResolver.resolve(T.self)
+        Resolver.resolve(T.self)
     }
 }
 
-// Not real dependency injection - rather meant for slighly more readability
+// Not real dependency injection - rather meant for more readability
 // (dependency tree is really simple)
-class DependencyResolver {
+class Resolver {
     
-    static let shared = DependencyResolver()
+    static let shared = Resolver()
     
     private static var registry: [String : Any] = [:]
     

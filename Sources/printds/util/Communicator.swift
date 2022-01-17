@@ -9,10 +9,10 @@ import Foundation
 
 class Communicator: Decodable {
     
-    @Injected private var console: Console!
-    @Injected private var fileService: FileService!
-    @Injected private var printService: PrintService!
-    @Injected private var documentService: DocumentService!
+    @Resolved private var console: Console!
+    @Resolved private var fileService: FileService!
+    @Resolved private var printService: PrintService!
+    @Resolved private var documentService: DocumentService!
     
     // MARK: - Execution modes
     

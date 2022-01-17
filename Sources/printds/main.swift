@@ -12,8 +12,8 @@ struct App: ParsableCommand {
     
     // MARK: - Dependencies
     
-    @Injected private var console: Console!
-    @Injected private var communicator: Communicator!
+    @Resolved private var console: Console!
+    @Resolved private var communicator: Communicator!
     
     // MARK: - Argument parsing
     
@@ -52,10 +52,10 @@ struct App: ParsableCommand {
     
 }
 
-DependencyResolver.register(Console())
-DependencyResolver.register(FileService())
-DependencyResolver.register(PrintService())
-DependencyResolver.register(DocumentService())
-DependencyResolver.register(Communicator())
+Resolver.register(Console())
+Resolver.register(FileService())
+Resolver.register(PrintService())
+Resolver.register(DocumentService())
+Resolver.register(Communicator())
 
 App.main()
