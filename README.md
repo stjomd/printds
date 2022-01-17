@@ -46,6 +46,10 @@ Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory
 ```
 printds document.pdf -o ~/Desktop
 ```
+Save a document `document-out.pdf` to the desktop by removing all pages in `document.pdf` after the 4th one:
+```
+printds -s document.pdf --to 4 --output ~/Desktop
+```
 
 ## Installation
 You will need to compile the source code, after which you can either add the executable to `/usr/local/bin` or run
