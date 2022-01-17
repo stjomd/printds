@@ -57,6 +57,4 @@ Otherwise, you can download the code and install immediately using the following
 ```
 git clone https://github.com/stjomd/printds.git && sudo printds/install.sh && rm -rf printds
 ```
-You will be prompted to enter your password.
-
-Note that you need the Swift compiler.
+You will be prompted to enter your password. Note that you need the Swift compiler.
