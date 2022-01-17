@@ -17,6 +17,8 @@ class Console: Decodable {
         case reset = "\u{001B}[0m"
     }
     
+    private var plain: Bool = false
+    
     /// Print a message to the console.
     /// - parameter message: The message to be printed.
     func log(_ message: String) {
@@ -48,8 +50,23 @@ class Console: Decodable {
         return readLine()
     }
     
+    /// Set the plain mode.
+    /// In plain mode, ANSI characters are not used.
+    /// - parameter plain: A boolean value indicating if plain output should be used.
+    func plain(_ plain: Bool) {
+        self.plain = plain
+    }
+    
+    /// Output a message to the console.
+    /// - parameters:
+    ///   - message: The message to be printed.
+    ///   - style: The style to be applied to the message.
     private func output(_ message: String, style: Style) {
-        print(style.rawValue + message + Style.reset.rawValue)
+        if plain {
+            print(message)
+        } else {
+            print(style.rawValue + message + Style.reset.rawValue)
+        }
     }
     
 }

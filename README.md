@@ -11,14 +11,15 @@ It's also possible to simply save the two documents to print them at a later tim
 ## Usage
 
 ```swift
-printds <input> [--output <output>] [--single]
+printds <input> [--output <output>] [--single] [--plain]
 ```
 
 | Placeholder | Description
 | --: | :----
-| `<input>` | The path to the document to be printed.
-| `--output <output>` <br/> `-o <output>` | Save the document(s) to the specified location, instead of printing.
-| `--single` <br/> `-s` | Work in single-side mode.
+| `<input>` | The path to the document.
+| `--output <output>` <br/> `-o <output>` | The directory to save files to instead of printing.
+| `--single` <br/> `-s` | Print a usual single-sided document.
+| `--plain` | Do not style output to the console.
 
 ## Examples
 Print `document.pdf` in duplex mode:

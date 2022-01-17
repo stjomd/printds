@@ -32,11 +32,15 @@ struct App: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
     var single: Bool = false
     
+    @Flag(name: .long, help: "Do not style output to the console.")
+    var plain: Bool = false
+    
     // MARK: - Entry point
     
     mutating func run() throws {
         do {
-            if (single) {
+            console.plain(plain)
+            if single {
                 try communicator.singlesided(input: input, output: output)
             } else {
                 try communicator.doublesided(input: input, output: output)
