@@ -15,7 +15,7 @@ class Communicator: Decodable {
     @Resolved private var documentService: DocumentService!
         
     /// Runs the program in the doublesided mode.
-    /// - parameter path: The path to the document to be printed.
+    /// - parameter args: The arguments of the program's run.
     /// - throws: If an error occurs during execution.
     public func doublesided(_ args: Arguments) throws {
         // Build documents
@@ -43,7 +43,7 @@ class Communicator: Decodable {
     }
     
     /// Runs the program in the singlesided mode.
-    /// - parameter path: The path to the document to be printed.
+    /// - parameter args: The arguments of the program's run.
     /// - throws: If an error occurs during execution.
     public func singlesided(_ args: Arguments) throws {
         let document = try documentService.document(path: args.input)
