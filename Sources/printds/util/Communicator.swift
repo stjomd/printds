@@ -17,15 +17,15 @@ class Communicator: Decodable {
     /// Runs the program in the doublesided mode.
     /// - parameter path: The path to the document to be printed.
     /// - throws: If an error occurs during execution.
-    public func doublesided(input: String, output: String?) throws {
+    public func doublesided(_ args: Arguments) throws {
         // Build documents
-        let document = try documentService.document(path: input)
+        let document = try documentService.document(path: args.input)
         let split = documentService.split(document)
         let noun = (split.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(split.pageCount) \(noun) of paper.")
         // Start printing/saving
-        if let output = output {
-            let name = fileService.name(from: input)
+        if let output = args.output {
+            let name = fileService.name(from: args.input)
             let (oddName, evenName) = ("\(name)-odd.pdf", "\(name)-even.pdf")
             try fileService.save(split.odd, named: oddName, to: output)
             try fileService.save(split.even, named: evenName, to: output)
@@ -45,12 +45,12 @@ class Communicator: Decodable {
     /// Runs the program in the singlesided mode.
     /// - parameter path: The path to the document to be printed.
     /// - throws: If an error occurs during execution.
-    public func singlesided(input: String, output: String?) throws {
-        let document = try documentService.document(path: input)
+    public func singlesided(_ args: Arguments) throws {
+        let document = try documentService.document(path: args.input)
         let noun = (document.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(document.pageCount) \(noun) of paper.")
-        if let output = output {
-            let name = fileService.name(from: input)
+        if let output = args.output {
+            let name = fileService.name(from: args.input)
             try fileService.save(document, named: "\(name)-out.pdf", to: output)
         } else {
             try printService.print(document)

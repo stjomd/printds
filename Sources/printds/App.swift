@@ -29,6 +29,12 @@ struct App: ParsableCommand {
     @Option(name: .shortAndLong, help: "The directory to save files to instead of printing.")
     var output: String?
     
+    @Option(name: .shortAndLong, help: "The number of the page to be considered the first.")
+    var from: Int?
+    
+    @Option(name: .shortAndLong, help: "The number of the page to be considered the last.")
+    var to: Int?
+    
     @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
     var single: Bool = false
     
@@ -39,11 +45,12 @@ struct App: ParsableCommand {
     
     mutating func run() throws {
         console.plain(plain)
+        let args = Arguments(input: input, output: output, from: from, to: to)
         do {
             if single {
-                try communicator.singlesided(input: input, output: output)
+                try communicator.singlesided(args)
             } else {
-                try communicator.doublesided(input: input, output: output)
+                try communicator.doublesided(args)
             }
         } catch Exception.because(let message) {
             console.error("Error: \(message)")
