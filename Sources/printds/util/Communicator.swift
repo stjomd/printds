@@ -19,7 +19,7 @@ class Communicator: Decodable {
     /// - throws: If an error occurs during execution.
     public func doublesided(_ args: Arguments) throws {
         // Build documents
-        let document = try documentService.document(path: args.input)
+        let document = try documentService.document(path: args.input, from: args.from, to: args.to)
         let split = documentService.split(document)
         let noun = (split.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(split.pageCount) \(noun) of paper.")
@@ -46,7 +46,7 @@ class Communicator: Decodable {
     /// - parameter args: The arguments of the program's run.
     /// - throws: If an error occurs during execution.
     public func singlesided(_ args: Arguments) throws {
-        let document = try documentService.document(path: args.input)
+        let document = try documentService.document(path: args.input, from: args.from, to: args.to)
         let noun = (document.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(document.pageCount) \(noun) of paper.")
         if let output = args.output {

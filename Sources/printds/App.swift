@@ -45,8 +45,8 @@ struct App: ParsableCommand {
     
     mutating func run() throws {
         console.plain(plain)
-        let args = Arguments(input: input, output: output, from: from, to: to)
         do {
+            let args = try Arguments(input: input, output: output, from: from, to: to)
             if single {
                 try communicator.singlesided(args)
             } else {

@@ -15,4 +15,15 @@ struct Arguments {
     let from: Int?
     let to: Int?
     
+    init(input: String, output: String?, from: Int?, to: Int?) throws {
+        self.input = input
+        self.output = output
+        if let from = from, let to = to, from > to {
+            throw Exception
+                .because("The value of option 'from' (\(from)) is larger than the value of 'to' (\(to)).")
+        }
+        self.from = from
+        self.to = to
+    }
+    
 }
