@@ -26,14 +26,14 @@ struct App: ParsableCommand {
     @Argument(help: "The path to the document.")
     var input: String
     
-    @Option(name: .shortAndLong, help: "The directory to save files to instead of printing.")
-    var output: String?
-    
     @Option(name: .shortAndLong, help: "The number of the page to be considered the first.")
     var from: Int?
     
     @Option(name: .shortAndLong, help: "The number of the page to be considered the last.")
     var to: Int?
+    
+    @Option(name: .shortAndLong, help: "The directory to save files to instead of printing.")
+    var output: String?
     
     @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
     var single: Bool = false
