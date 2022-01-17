@@ -38,8 +38,8 @@ struct App: ParsableCommand {
     // MARK: - Entry point
     
     mutating func run() throws {
+        console.plain(plain)
         do {
-            console.plain(plain)
             if single {
                 try communicator.singlesided(input: input, output: output)
             } else {
