@@ -17,8 +17,8 @@ printds <input> [--output <output>] [--single] [--plain]
 | Placeholder | Description
 | --: | :----
 | `<input>` | The path to the document.
-| `--output <output>` <br/> `-o <output>` | The directory to save files to instead of printing.
-| `--single` <br/> `-s` | Print a usual single-sided document.
+| `--output <output>`<br/>`-o <output>` | The directory to save files to instead of printing.
+| `--single`<br/>`-s` | Print a usual single-sided document.
 | `--plain` | Do not style output to the console.
 
 ## Examples
