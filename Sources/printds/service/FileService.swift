@@ -48,6 +48,7 @@ class FileService: Decodable {
     /// - returns: The name, or an empty string if it couldn't be determined.
     public func name(from path: String) -> String {
         var dotIndex = path.endIndex
+        // Attempt to return the name of the file (.../dir/doc.pdf -> doc)
         for i in stride(from: path.count - 1, to: 0, by: -1) {
             let index = path.index(path.startIndex, offsetBy: i)
             if path[index] == "." {
@@ -57,10 +58,11 @@ class FileService: Decodable {
                 return String(path[cutIndex..<dotIndex])
             }
         }
+        // No slashes in the string: (doc.pdf -> doc) or (doc -> doc)
         if dotIndex != path.endIndex {
             return String(path[..<dotIndex])
         } else {
-            return ""
+            return path
         }
     }
     
