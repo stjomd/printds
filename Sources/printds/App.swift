@@ -38,7 +38,7 @@ struct App: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
     var single: Bool = false
     
-    @Flag(name: .long, help: "Do not style output to the console.")
+    @Flag(name: .shortAndLong, help: "Do not style output to the console.")
     var plain: Bool = false
     
     // MARK: - Entry point

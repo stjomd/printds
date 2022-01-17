@@ -21,7 +21,7 @@ printds <input> [--from <from>] [--to <to>] [--output <output>] [--single] [--pl
 | `--to <to>`<br/>`-t <to>` | The number of the page to be considered the last.
 | `--output <output>`<br/>`-o <output>` | The directory to save files to instead of printing.
 | `--single`<br/>`-s` | Print a usual single-sided document.
-| `--plain` | Do not style output to the console.
+| `--plain`<br/>`-p` | Do not style output to the console.
 
 ## Examples
 Print `document.pdf` in duplex mode:
