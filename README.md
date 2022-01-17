@@ -11,12 +11,14 @@ It's also possible to simply save the two documents to print them at a later tim
 ## Usage
 
 ```swift
-printds <input> [--output <output>] [--single] [--plain]
+printds <input> [--from <from>] [--to <to>] [--output <output>] [--single] [--plain]
 ```
 
-| Placeholder | Description
+| Parameter | Description
 | --: | :----
 | `<input>` | The path to the document.
+| `--from <from>`<br/>`-f <from>` | The number of the page to be considered the first.
+| `--to <to>`<br/>`-t <to>` | The number of the page to be considered the last.
 | `--output <output>`<br/>`-o <output>` | The directory to save files to instead of printing.
 | `--single`<br/>`-s` | Print a usual single-sided document.
 | `--plain` | Do not style output to the console.
@@ -26,10 +28,18 @@ Print `document.pdf` in duplex mode:
 ```
 printds document.pdf
 ```
+Print pages 2, 3, 4 and 5 of `document.pdf` in duplex mode:
+```
+printds document.pdf --from 2 --to 5
+```
 
 Print `document.pdf` in single-sided mode:
 ```
 printds -s document.pdf
+```
+Print all pages of `document.pdf`, starting with 3, in single-sided mode:
+```
+printds -s document.pdf --from 3
 ```
 
 Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory `~/Desktop`, to be printed later:
