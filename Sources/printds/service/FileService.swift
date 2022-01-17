@@ -24,7 +24,7 @@ class FileService: Decodable {
         } else if FileManager.default.fileExists(atPath: globalUrl.path) {
             return globalUrl
         } else {
-            throw Exception.because("File not found")
+            throw Exception.because("The path \(path) doesn't exist.")
         }
     }
     
@@ -39,7 +39,30 @@ class FileService: Decodable {
         if try self.isDirectory(at: directoryUrl) {
             document.write(to: directoryUrl.appendingPathComponent(name))
         } else {
-            throw Exception.because("The output path is not a directory.")
+            throw Exception.because("The output path \(path) is not a directory.")
+        }
+    }
+    
+    /// Retrieves the name of a file or directory from a path string.
+    /// - parameter path: The path to the file or directory.
+    /// - returns: The name, or an empty string if it couldn't be determined.
+    public func name(from path: String) -> String {
+        var dotIndex = path.endIndex
+        // Attempt to return the name of the file (.../dir/doc.pdf -> doc)
+        for i in stride(from: path.count - 1, to: 0, by: -1) {
+            let index = path.index(path.startIndex, offsetBy: i)
+            if path[index] == "." {
+                dotIndex = index
+            } else if path[index] == "/" {
+                let cutIndex = path.index(index, offsetBy: 1)
+                return String(path[cutIndex..<dotIndex])
+            }
+        }
+        // No slashes in the string: (doc.pdf -> doc) or (doc -> doc)
+        if dotIndex != path.endIndex {
+            return String(path[..<dotIndex])
+        } else {
+            return path
         }
     }
     
@@ -51,7 +74,7 @@ class FileService: Decodable {
     /// - throws: An exception is thrown if the URL cannot be constructed.
     private func url(from path: String) throws -> URL {
         guard let url = URL(string: "file://" + path) else {
-            throw Exception.because("Invalid file path")
+            throw Exception.because("Invalid path \(path).")
         }
         return url
     }
@@ -64,7 +87,7 @@ class FileService: Decodable {
         if let check = try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory {
             return check
         } else {
-            throw Exception.because("Couldn't check whether the path is a directory.")
+            throw Exception.because("Couldn't check whether the path \(url.path) is a directory.")
         }
     }
     

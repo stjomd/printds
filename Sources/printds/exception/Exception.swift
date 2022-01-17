@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The error type used in the `printds` application.
 enum Exception: Error {
     case because(String)
 }

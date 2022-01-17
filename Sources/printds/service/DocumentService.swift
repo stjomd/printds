@@ -10,17 +10,21 @@ import PDFKit
 
 class DocumentService: Decodable {
     
-    @Injected private var fileService: FileService!
+    @Resolved private var fileService: FileService!
         
     /// Loads a PDF document from a specifie path.
-    /// - parameter path: The path to the document.
+    /// - parameters:
+    ///   - path: The path to the document.
+    ///   - from: The page to be treated as the first.
+    ///   - to:   The page to be treates as the last.
     /// - returns: A PDFDocument instance.
-    /// - throws: An exception is thrown if the document couldn't be loaded (invalid path, nonexistent file, etc.)
-    public func document(path: String) throws -> PDFDocument {
+    /// - throws: An exception is thrown if the document couldn't be loaded (invalid path, nonexistent file, etc.), or if the range is invalid (out of bounds).
+    public func document(path: String, from: Int?, to: Int?) throws -> PDFDocument {
         let url = try fileService.locate(path)
         guard let document = PDFDocument(url: url) else {
-            throw Exception.because("Couldn't open the document")
+            throw Exception.because("Couldn't open the document at \(path).")
         }
+        try cut(document, from: from, to: to)
         return document
     }
     
@@ -44,6 +48,37 @@ class DocumentService: Decodable {
             }
         }
         return SplitPDFDocument(odd: docs.0, even: docs.1)
+    }
+    
+    // MARK: - Helpers
+    
+    /// Removes pages from the document that lie outside the specified range.
+    /// - parameters:
+    ///   - document: The document to be processed.
+    ///   - from:     The number of the future first page.
+    ///   - to:       The number of the future last page.
+    /// - throws: An exception is thrown if the parameters `from` and/or `to` lie outside the bounds (1 to page count).
+    private func cut(_ document: PDFDocument, from: Int?, to: Int?) throws {
+        // Validate
+        var (lowerBound, upperBound) = (1, document.pageCount)
+        if let from = from {
+            lowerBound = from
+        }
+        if let to = to {
+            upperBound = to
+        }
+        if lowerBound < 1 || lowerBound > document.pageCount {
+            throw Exception.because("The value of option 'from' (\(lowerBound)) is out of bounds.")
+        } else if upperBound < 1 || upperBound > document.pageCount {
+            throw Exception.because("The value of option 'to' (\(upperBound)) is out of bounds.")
+        }
+        // Cut document
+        while (document.pageCount > upperBound) {
+            document.removePage(at: document.pageCount - 1)
+        }
+        for _ in 0..<(lowerBound-1) {
+            document.removePage(at: 0)
+        }
     }
     
 }

@@ -9,6 +9,7 @@ import Foundation
 
 class Console: Decodable {
     
+    /// The enum that stores all required styles. Raw values correspond to the ANSI codes.
     private enum Style: String {
         case red = "\u{001B}[0;31m"
         case green = "\u{001B}[0;32m"
@@ -16,6 +17,9 @@ class Console: Decodable {
         case cyan = "\u{001B}[0;36m"
         case reset = "\u{001B}[0m"
     }
+    
+    /// A value that indicates whether the output should be plain (not styled).
+    private var plain: Bool = false
     
     /// Print a message to the console.
     /// - parameter message: The message to be printed.
@@ -48,8 +52,23 @@ class Console: Decodable {
         return readLine()
     }
     
+    /// Set the plain mode.
+    /// In plain mode, ANSI characters are not used.
+    /// - parameter plain: A boolean value indicating if plain output should be used.
+    func plain(_ plain: Bool) {
+        self.plain = plain
+    }
+    
+    /// Output a message to the console.
+    /// - parameters:
+    ///   - message: The message to be printed.
+    ///   - style: The style to be applied to the message.
     private func output(_ message: String, style: Style) {
-        print(style.rawValue + message + Style.reset.rawValue)
+        if plain {
+            print(message)
+        } else {
+            print(style.rawValue + message + Style.reset.rawValue)
+        }
     }
     
 }

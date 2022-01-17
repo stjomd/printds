@@ -9,25 +9,23 @@ import Foundation
 
 class Communicator: Decodable {
     
-    @Injected private var console: Console!
-    @Injected private var fileService: FileService!
-    @Injected private var printService: PrintService!
-    @Injected private var documentService: DocumentService!
-    
-    // MARK: - Execution modes
-    
+    @Resolved private var console: Console!
+    @Resolved private var fileService: FileService!
+    @Resolved private var printService: PrintService!
+    @Resolved private var documentService: DocumentService!
+        
     /// Runs the program in the doublesided mode.
-    /// - parameter path: The path to the document to be printed.
+    /// - parameter args: The arguments of the program's run.
     /// - throws: If an error occurs during execution.
-    public func doublesided(input: String, output: String?) throws {
+    public func doublesided(_ args: Arguments) throws {
         // Build documents
-        let document = try documentService.document(path: input)
+        let document = try documentService.document(path: args.input, from: args.from, to: args.to)
         let split = documentService.split(document)
         let noun = (split.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(split.pageCount) \(noun) of paper.")
         // Start printing/saving
-        if let output = output {
-            let name = self.name(from: input)
+        if let output = args.output {
+            let name = fileService.name(from: args.input)
             let (oddName, evenName) = ("\(name)-odd.pdf", "\(name)-even.pdf")
             try fileService.save(split.odd, named: oddName, to: output)
             try fileService.save(split.even, named: evenName, to: output)
@@ -45,41 +43,19 @@ class Communicator: Decodable {
     }
     
     /// Runs the program in the singlesided mode.
-    /// - parameter path: The path to the document to be printed.
+    /// - parameter args: The arguments of the program's run.
     /// - throws: If an error occurs during execution.
-    public func singlesided(input: String, output: String?) throws {
-        let document = try documentService.document(path: input)
-        console.info("You will need \(document.pageCount) sheet\(document.pageCount == 1 ? "" : "s") of paper.")
-        if let output = output {
-            let name = self.name(from: input)
+    public func singlesided(_ args: Arguments) throws {
+        let document = try documentService.document(path: args.input, from: args.from, to: args.to)
+        let noun = (document.pageCount == 1) ? "sheet" : "sheets"
+        console.info("You will need \(document.pageCount) \(noun) of paper.")
+        if let output = args.output {
+            let name = fileService.name(from: args.input)
             try fileService.save(document, named: "\(name)-out.pdf", to: output)
         } else {
             try printService.print(document)
         }
         console.success("Done.")
-    }
-    
-    // MARK: - Helpers
-    
-    /// Retrieves the name of a file or directory from a path string.
-    /// - parameter path: The path to the file or directory.
-    /// - returns: The name, or an empty string if it couldn't be determined.
-    private func name(from path: String) -> String {
-        var dotIndex = path.endIndex
-        for i in stride(from: path.count - 1, to: 0, by: -1) {
-            let index = path.index(path.startIndex, offsetBy: i)
-            if path[index] == "." {
-                dotIndex = index
-            } else if path[index] == "/" {
-                let cutIndex = path.index(index, offsetBy: 1)
-                return String(path[cutIndex..<dotIndex])
-            }
-        }
-        if dotIndex != path.endIndex {
-            return String(path[..<dotIndex])
-        } else {
-            return ""
-        }
     }
     
 }
