@@ -9,6 +9,7 @@ import Foundation
 
 class Console: Decodable {
     
+    /// The enum that stores all required styles. Raw values correspond to the ANSI codes.
     private enum Style: String {
         case red = "\u{001B}[0;31m"
         case green = "\u{001B}[0;32m"
@@ -17,6 +18,7 @@ class Console: Decodable {
         case reset = "\u{001B}[0m"
     }
     
+    /// A value that indicates whether the output should be plain (not styled).
     private var plain: Bool = false
     
     /// Print a message to the console.
