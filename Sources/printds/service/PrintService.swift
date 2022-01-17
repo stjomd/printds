@@ -16,8 +16,8 @@ class PrintService: Decodable {
     func print(_ document: PDFDocument) throws {
         guard let operation = document.printOperation(
             for: NSPrintInfo.shared,
-            scalingMode: .pageScaleNone,
-            autoRotate: false
+            scalingMode: .pageScaleToFit,
+            autoRotate: true
         ) else {
             throw Exception.because("Couldn't retrieve a print operation object.")
         }
