@@ -20,7 +20,7 @@ struct App: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "printds",
         abstract: "Print double sided documents manually with ease.",
-        version: "0.0.1"
+        version: "1.1.0"
     )
 
     @Argument(help: "The path to the document.")
