@@ -43,6 +43,27 @@ class FileService: Decodable {
         }
     }
     
+    /// Retrieves the name of a file or directory from a path string.
+    /// - parameter path: The path to the file or directory.
+    /// - returns: The name, or an empty string if it couldn't be determined.
+    public func name(from path: String) -> String {
+        var dotIndex = path.endIndex
+        for i in stride(from: path.count - 1, to: 0, by: -1) {
+            let index = path.index(path.startIndex, offsetBy: i)
+            if path[index] == "." {
+                dotIndex = index
+            } else if path[index] == "/" {
+                let cutIndex = path.index(index, offsetBy: 1)
+                return String(path[cutIndex..<dotIndex])
+            }
+        }
+        if dotIndex != path.endIndex {
+            return String(path[..<dotIndex])
+        } else {
+            return ""
+        }
+    }
+    
     // MARK: - Helpers
     
     /// Creates a URL instance from a path string.
