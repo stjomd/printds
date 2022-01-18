@@ -17,14 +17,14 @@ final class FileServiceTests: XCTestCase {
     private var fileService: FileService!
     
     override func setUpWithError() throws {
-        self.directory = shell("pwd")
+        self.directory = try shell("pwd")
         self.identifier = UUID().description
         self.fileService = FileService()
-        shell("touch", "\(identifier!).pdf")
+        try shell("touch \(identifier!).pdf")
     }
 
     override func tearDownWithError() throws {
-        shell("rm", "\(identifier!).pdf")
+        try shell("rm \(identifier!).pdf")
         self.directory = nil
         self.identifier = nil
         self.fileService = nil
@@ -54,9 +54,9 @@ final class FileServiceTests: XCTestCase {
     func testSave() throws {
         let fileName = "\(identifier!)-save.pdf"
         try fileService.save(PDFDocument(), named: fileName, to: directory)
-        XCTAssertEqual(shell("ls", fileName), fileName)
-        shell("rm", fileName)
-        XCTAssertNotEqual(shell("ls", fileName), fileName)
+        XCTAssertEqual(try shell("ls \(fileName)"), fileName)
+        try shell("rm \(fileName)")
+        XCTAssertNotEqual(try shell("ls \(fileName)"), fileName)
     }
     
     func testName() throws {
@@ -73,15 +73,15 @@ final class FileServiceTests: XCTestCase {
     
     // Courtesy of https://stackoverflow.com/a/50035059
     @discardableResult
-    private func shell(_ args: String...) -> String {
+    private func shell(_ command: String) throws -> String {
         let task = Process()
         let pipe = Pipe()
         task.standardOutput = pipe
         task.standardError = pipe
-        task.launchPath = "/usr/bin/env"
-        task.arguments = args
-        task.launch()
-        task.waitUntilExit()
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        task.arguments = ["-c", command]
+        // Run
+        try task.run()
         // Get output
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         var output = String(data: data, encoding: .utf8)!
