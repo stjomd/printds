@@ -17,14 +17,14 @@ final class FileServiceTests: XCTestCase {
     private var fileService: FileService!
     
     override func setUpWithError() throws {
-        self.directory = try shell("pwd")
+        self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
         self.fileService = FileService()
-        try shell("touch \(identifier!).pdf")
+        try Shell.exec("touch \(identifier!).pdf")
     }
 
     override func tearDownWithError() throws {
-        try shell("rm \(identifier!).pdf")
+        try Shell.exec("rm \(identifier!).pdf")
         self.directory = nil
         self.identifier = nil
         self.fileService = nil
@@ -66,16 +66,16 @@ final class FileServiceTests: XCTestCase {
         // Save an empty PDF document
         let fileName = "\(identifier!)-save.pdf"
         try fileService.save(PDFDocument(), named: fileName, to: directory)
-        XCTAssertEqual(try shell("ls \(fileName)"), fileName)
+        XCTAssertEqual(try Shell.exec("ls \(fileName)"), fileName)
         // Restore - remove document
-        try shell("rm \(fileName)")
-        XCTAssertNotEqual(try shell("ls \(fileName)"), fileName)
+        try Shell.exec("rm \(fileName)")
+        XCTAssertNotEqual(try Shell.exec("ls \(fileName)"), fileName)
     }
     
     func test_save_shouldThrow_whenNotToDirectory() throws {
-        try shell("touch x.pdf")
+        try Shell.exec("touch x.pdf")
         XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "x.pdf"))
-        try shell("rm x.pdf")
+        try Shell.exec("rm x.pdf")
     }
     
     func test_name_shouldAlwaysReturnName() throws {
@@ -86,28 +86,6 @@ final class FileServiceTests: XCTestCase {
         XCTAssertEqual(fileService.name(from: "~/Desktop/Folder/presentation.pdf"), "presentation")
         XCTAssertEqual(fileService.name(from: "something"), "something")
         XCTAssertEqual(fileService.name(from: ""), "")
-    }
-    
-    // MARK: - Helpers
-    
-    // Courtesy of https://stackoverflow.com/a/50035059
-    @discardableResult
-    private func shell(_ command: String) throws -> String {
-        let task = Process()
-        let pipe = Pipe()
-        task.standardOutput = pipe
-        task.standardError = pipe
-        task.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        task.arguments = ["-c", command]
-        // Run
-        try task.run()
-        // Get output
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        var output = String(data: data, encoding: .utf8)!
-        if let last = output.last, last == "\n" {
-            output.removeLast()
-        }
-        return output
     }
     
 }
