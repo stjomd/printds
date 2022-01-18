@@ -71,6 +71,7 @@ final class FileServiceTests: XCTestCase {
     
     // MARK: - Helpers
     
+    // Courtesy of https://stackoverflow.com/a/50035059
     @discardableResult
     private func shell(_ args: String...) -> String {
         let task = Process()
