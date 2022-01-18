@@ -53,7 +53,11 @@ class DocumentService: Decodable {
                 docs.1.insert(document.page(at: count - shift - i)!, at: docs.1.pageCount)
             }
         }
-        return SplitPDFDocument(odd: docs.0, even: docs.1)
+        if document.pageCount == 1 {
+            return SplitPDFDocument(odd: docs.0, even: nil)
+        } else {
+            return SplitPDFDocument(odd: docs.0, even: docs.1)
+        }
     }
     
     // MARK: - Helpers

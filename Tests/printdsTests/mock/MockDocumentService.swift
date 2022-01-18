@@ -40,7 +40,11 @@ class MockDocumentService: DocumentService {
         } else {
             size = 1 + document.pageCount / 2
         }
-        return SplitPDFDocument(odd: doc(size: size), even: doc(size: size))
+        if document.pageCount == 1 {
+            return SplitPDFDocument(odd: doc(size: size), even: nil)
+        } else {
+            return SplitPDFDocument(odd: doc(size: size), even: doc(size: size))
+        }
     }
     
     // MARK: - Helpers

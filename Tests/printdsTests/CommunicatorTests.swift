@@ -47,6 +47,13 @@ class CommunicatorTests: XCTestCase {
         XCTAssertEqual(printService.counter, 2)
     }
     
+    func test_doublesided_shouldPrintOnce_whenOnlyOnePage() throws {
+        XCTAssertEqual(printService.counter, 0)
+        let args = try Arguments(input: "\(identifier!).pdf", output: nil, from: 2, to: 2)
+        try communicator.doublesided(args)
+        XCTAssertEqual(printService.counter, 1)
+    }
+    
     func test_doublesided_shouldSaveTwoDocs_whenOutputNotNil() throws {
         let args = try Arguments(input: "\(identifier!).pdf", output: ".", from: nil, to: nil)
         try communicator.doublesided(args)

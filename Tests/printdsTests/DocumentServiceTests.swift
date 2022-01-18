@@ -84,16 +84,16 @@ class DocumentServiceTests: XCTestCase {
         let split = documentService.split(documentOdd)
         let oddCount = 1 + (self.documentOdd.pageCount / 2)
         XCTAssertEqual(split.pageCount, oddCount)
-        XCTAssertEqual(split.odd.pageCount, oddCount)
-        XCTAssertEqual(split.even.pageCount, self.documentOdd.pageCount - oddCount + 1) // adds a blank page
+        XCTAssertEqual(split.odd!.pageCount, oddCount)
+        XCTAssertEqual(split.even!.pageCount, self.documentOdd.pageCount - oddCount + 1) // adds a blank page
     }
     
     func test_split_shouldReturnSplitDocsOfSameLength_whenDocOfEvenLength() throws {
         let split = documentService.split(documentEven)
         let evenCount = self.documentEven.pageCount / 2
         XCTAssertEqual(split.pageCount, evenCount)
-        XCTAssertEqual(split.odd.pageCount, evenCount)
-        XCTAssertEqual(split.even.pageCount, evenCount)
+        XCTAssertEqual(split.odd!.pageCount, evenCount)
+        XCTAssertEqual(split.even!.pageCount, evenCount)
     }
     
     // MARK: - Helpers

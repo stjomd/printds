@@ -37,14 +37,22 @@ class Communicator: Decodable {
         if let output = args.output {
             let name = fileService.name(from: args.input)
             let (oddName, evenName) = ("\(name)-odd.pdf", "\(name)-even.pdf")
-            try fileService.save(split.odd, named: oddName, to: output)
-            try fileService.save(split.even, named: evenName, to: output)
+            if let odd = split.odd {
+                try fileService.save(odd, named: oddName, to: output)
+            }
+            if let even = split.even {
+                try fileService.save(even, named: evenName, to: output)
+            }
             console.info("First print \(oddName), then \(evenName).")
         } else {
-            try printService.print(split.odd)
-            console.info("Turn the printed pages over, and insert them into the paper tray.")
-            console.prompt("Press enter to continue.")
-            try printService.print(split.even)
+            if let odd = split.odd {
+                try printService.print(odd)
+            }
+            if let even = split.even {
+                console.info("Turn the printed pages over, and insert them into the paper tray.")
+                console.prompt("Press enter to continue.")
+                try printService.print(even)
+            }
         }
         // Finish
         let saved = document.pageCount - split.pageCount
