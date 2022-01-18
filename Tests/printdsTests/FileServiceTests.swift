@@ -1,4 +1,5 @@
 import XCTest
+import PDFKit
 @testable import printds
 
 final class FileServiceTests: XCTestCase {
@@ -9,7 +10,7 @@ final class FileServiceTests: XCTestCase {
     private var fileService: FileService!
     
     override func setUpWithError() throws {
-        self.directory = shell("pwd").replacingOccurrences(of: "\n", with: "")
+        self.directory = shell("pwd")
         self.identifier = UUID().description
         self.fileService = FileService()
         shell("touch", "\(identifier!).pdf")
@@ -43,6 +44,14 @@ final class FileServiceTests: XCTestCase {
         }
     }
     
+    func testSave() throws {
+        let fileName = "\(identifier!)-save.pdf"
+        try fileService.save(PDFDocument(), named: fileName, to: directory)
+        XCTAssertEqual(shell("ls", fileName), fileName)
+        shell("rm", fileName)
+        XCTAssertNotEqual(shell("ls", fileName), fileName)
+    }
+    
     func testName() throws {
         XCTAssertEqual(fileService.name(from: "hello.pdf"), "hello")
         XCTAssertEqual(fileService.name(from: "dir/document.pdf"), "document")
@@ -64,9 +73,13 @@ final class FileServiceTests: XCTestCase {
         task.arguments = args
         task.launch()
         task.waitUntilExit()
+        // Get output
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(data: data, encoding: .utf8)!
-        //return task.terminationStatus
+        var output = String(data: data, encoding: .utf8)!
+        if let last = output.last, last == "\n" {
+            output.removeLast()
+        }
+        return output
     }
     
 }
