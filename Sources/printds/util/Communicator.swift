@@ -42,8 +42,8 @@ class Communicator: Decodable {
             }
             if let even = split.even {
                 try fileService.save(even, named: evenName, to: output)
+                console.info("First print \(oddName), then \(evenName).")
             }
-            console.info("First print \(oddName), then \(evenName).")
         } else {
             if let odd = split.odd {
                 try printService.print(odd)
