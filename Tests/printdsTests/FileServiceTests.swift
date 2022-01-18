@@ -53,6 +53,15 @@ final class FileServiceTests: XCTestCase {
         }
     }
     
+    func testLocateNonExistent() throws {
+        if let identifier = identifier {
+            // "identifier-x.pdf" is a non-existent path
+            XCTAssertThrowsError(try fileService.locate("\(identifier)-x.pdf"))
+        } else {
+            XCTFail("Set up failed – no identifier present")
+        }
+    }
+    
     func testSave() throws {
         // Save an empty PDF document
         let fileName = "\(identifier!)-save.pdf"
@@ -61,6 +70,12 @@ final class FileServiceTests: XCTestCase {
         // Restore - remove document
         try shell("rm \(fileName)")
         XCTAssertNotEqual(try shell("ls \(fileName)"), fileName)
+    }
+    
+    func testSaveNotDirectory() throws {
+        try shell("touch x.pdf")
+        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "x.pdf"))
+        try shell("rm x.pdf")
     }
     
     func testName() throws {
