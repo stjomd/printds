@@ -32,7 +32,7 @@ final class FileServiceTests: XCTestCase {
     
     // MARK: - Tests
     
-    func testLocateLocal() throws {
+    func test_locate_shouldLocate_whenPathIsLocal() throws {
         if let directory = directory, let identifier = identifier {
             // "identifier.pdf" is a local path
             let url = URL(fileURLWithPath: "\(directory)/\(identifier).pdf")
@@ -42,7 +42,7 @@ final class FileServiceTests: XCTestCase {
         }
     }
     
-    func testLocateGlobal() throws {
+    func test_locate_shouldLocate_whenPathIsGlobal() throws {
         if let directory = directory, let identifier = identifier {
             // "path/identifier.pdf" is a global path
             let path = "\(directory)/\(identifier).pdf"
@@ -53,7 +53,7 @@ final class FileServiceTests: XCTestCase {
         }
     }
     
-    func testLocateNonExistent() throws {
+    func test_locate_shouldThrow_whenPathDoesNotExist() throws {
         if let identifier = identifier {
             // "identifier-x.pdf" is a non-existent path
             XCTAssertThrowsError(try fileService.locate("\(identifier)-x.pdf"))
@@ -62,7 +62,7 @@ final class FileServiceTests: XCTestCase {
         }
     }
     
-    func testSave() throws {
+    func test_save_shouldSave_whenToDirectory() throws {
         // Save an empty PDF document
         let fileName = "\(identifier!)-save.pdf"
         try fileService.save(PDFDocument(), named: fileName, to: directory)
@@ -72,13 +72,13 @@ final class FileServiceTests: XCTestCase {
         XCTAssertNotEqual(try shell("ls \(fileName)"), fileName)
     }
     
-    func testSaveNotDirectory() throws {
+    func test_save_shouldThrow_whenNotToDirectory() throws {
         try shell("touch x.pdf")
         XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "x.pdf"))
         try shell("rm x.pdf")
     }
     
-    func testName() throws {
+    func test_name_shouldAlwaysReturnName() throws {
         XCTAssertEqual(fileService.name(from: "hello.pdf"), "hello")
         XCTAssertEqual(fileService.name(from: "dir/document.pdf"), "document")
         XCTAssertEqual(fileService.name(from: "./folder/image.png"), "image")
