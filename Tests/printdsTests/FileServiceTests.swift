@@ -66,6 +66,7 @@ final class FileServiceTests: XCTestCase {
         XCTAssertEqual(fileService.name(from: "../ordner/song.mp3"), "song")
         XCTAssertEqual(fileService.name(from: "~/Desktop/Folder/presentation.pdf"), "presentation")
         XCTAssertEqual(fileService.name(from: "something"), "something")
+        XCTAssertEqual(fileService.name(from: ""), "")
     }
     
     // MARK: - Helpers
