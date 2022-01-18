@@ -15,18 +15,17 @@ class DocumentServiceTests: XCTestCase {
     private var documentOdd: PDFDocument!
     private var documentEven: PDFDocument!
     
-    private var fileService: FileService!
     private var documentService: DocumentService!
     
     override func setUpWithError() throws {
         let directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        self.fileService = MockFileService(directory: directory, name: identifier)
+        let fileService = MockFileService(directory: directory, name: identifier)
         self.documentService = DocumentService(fileService: fileService)
         // Save a document
-        self.documentOdd = document(pages: 5)
+        self.documentOdd = MockDocumentService.mockDocument(size: 5)
         self.documentOdd.write(to: URL(fileURLWithPath: directory).appendingPathComponent("\(identifier!)-odd.pdf"))
-        self.documentEven = document(pages: 8)
+        self.documentEven = MockDocumentService.mockDocument(size: 8)
         self.documentEven.write(to: URL(fileURLWithPath: directory).appendingPathComponent("\(identifier!)-even.pdf"))
     }
 
@@ -35,7 +34,6 @@ class DocumentServiceTests: XCTestCase {
         self.documentOdd = nil
         self.documentEven = nil
         self.identifier = nil
-        self.fileService = nil
     }
     
     // MARK: - Tests
@@ -94,16 +92,6 @@ class DocumentServiceTests: XCTestCase {
         XCTAssertEqual(split.pageCount, evenCount)
         XCTAssertEqual(split.odd!.pageCount, evenCount)
         XCTAssertEqual(split.even!.pageCount, evenCount)
-    }
-    
-    // MARK: - Helpers
-    
-    private func document(pages: Int) -> PDFDocument {
-        let doc = PDFDocument()
-        for _ in 0..<pages {
-            doc.insert(PDFPage(), at: 0)
-        }
-        return doc
     }
 
 }
