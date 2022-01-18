@@ -34,6 +34,7 @@ final class FileServiceTests: XCTestCase {
     
     func testLocateLocal() throws {
         if let directory = directory, let identifier = identifier {
+            // "identifier.pdf" is a local path
             let url = URL(string: "file://\(directory)/\(identifier).pdf")!
             XCTAssertEqual(try fileService.locate("\(identifier).pdf"), url)
         } else {
@@ -43,6 +44,7 @@ final class FileServiceTests: XCTestCase {
     
     func testLocateGlobal() throws {
         if let directory = directory, let identifier = identifier {
+            // "path/identifier.pdf" is a global path
             let path = "\(directory)/\(identifier).pdf"
             let url = URL(string: "file://\(directory)/\(identifier).pdf")!
             XCTAssertEqual(try fileService.locate(path), url)
@@ -52,9 +54,11 @@ final class FileServiceTests: XCTestCase {
     }
     
     func testSave() throws {
+        // Save an empty PDF document
         let fileName = "\(identifier!)-save.pdf"
         try fileService.save(PDFDocument(), named: fileName, to: directory)
         XCTAssertEqual(try shell("ls \(fileName)"), fileName)
+        // Restore - remove document
         try shell("rm \(fileName)")
         XCTAssertNotEqual(try shell("ls \(fileName)"), fileName)
     }
