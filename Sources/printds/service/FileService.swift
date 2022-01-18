@@ -16,7 +16,7 @@ class FileService: Decodable {
     /// - throws: An exception is thrown if the file couldn't be found.
     public func locate(_ path: String) throws -> URL {
         let correctedPath = path.replacingOccurrences(of: "\\ ", with: " ")
-        let globalUrl = try self.url(from: "~").appendingPathComponent(correctedPath)
+        let globalUrl = try self.url(from: correctedPath)
         let localUrl = try self.url(from: FileManager.default.currentDirectoryPath)
                                .appendingPathComponent(correctedPath)
         if FileManager.default.fileExists(atPath: localUrl.path) {
