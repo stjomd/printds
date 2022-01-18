@@ -55,12 +55,39 @@ class CommunicatorTests: XCTestCase {
     }
     
     func test_doublesided_shouldSaveTwoDocs_whenOutputNotNil() throws {
+        XCTAssertEqual(printService.counter, 0)
         let args = try Arguments(input: "\(identifier!).pdf", output: ".", from: nil, to: nil)
         try communicator.doublesided(args)
         XCTAssertEqual(printService.counter, 0)
         let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
         XCTAssertTrue(ls.contains("\(identifier!)-odd.pdf"))
         XCTAssertTrue(ls.contains("\(identifier!)-even.pdf"))
+    }
+    
+    func test_doublesided_shouldSaveOneDoc_whenOutputNotNilAndOnlyOnePage() throws {
+        XCTAssertEqual(printService.counter, 0)
+        let args = try Arguments(input: "\(identifier!).pdf", output: ".", from: 3, to: 3)
+        try communicator.doublesided(args)
+        XCTAssertEqual(printService.counter, 0)
+        let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
+        XCTAssertTrue(ls.contains("\(identifier!)-odd.pdf"))
+        XCTAssertFalse(ls.contains("\(identifier!)-even.pdf"))
+    }
+    
+    func test_singlessided_shouldPrintOnce_whenOutputIsNil() throws {
+        XCTAssertEqual(printService.counter, 0)
+        let args = try Arguments(input: "\(identifier!).pdf", output: nil, from: nil, to: nil)
+        try communicator.singlesided(args)
+        XCTAssertEqual(printService.counter, 1)
+    }
+    
+    func test_singlessided_shouldSaveOneDoc_whenOutputNotNil() throws {
+        XCTAssertEqual(printService.counter, 0)
+        let args = try Arguments(input: "\(identifier!).pdf", output: ".", from: nil, to: nil)
+        try communicator.singlesided(args)
+        XCTAssertEqual(printService.counter, 0)
+        XCTAssertEqual(try Shell.exec("ls \(identifier!)*.pdf"), "\(identifier!)-out.pdf")
+
     }
 
 }
