@@ -35,7 +35,7 @@ final class FileServiceTests: XCTestCase {
     func testLocateLocal() throws {
         if let directory = directory, let identifier = identifier {
             // "identifier.pdf" is a local path
-            let url = URL(string: "file://\(directory)/\(identifier).pdf")!
+            let url = URL(fileURLWithPath: "\(directory)/\(identifier).pdf")
             XCTAssertEqual(try fileService.locate("\(identifier).pdf"), url)
         } else {
             XCTFail("Set up failed – no directory and/or identifier present")
@@ -46,7 +46,7 @@ final class FileServiceTests: XCTestCase {
         if let directory = directory, let identifier = identifier {
             // "path/identifier.pdf" is a global path
             let path = "\(directory)/\(identifier).pdf"
-            let url = URL(string: "file://\(directory)/\(identifier).pdf")!
+            let url = URL(fileURLWithPath: "\(directory)/\(identifier).pdf")
             XCTAssertEqual(try fileService.locate(path), url)
         } else {
             XCTFail("Set up failed – no directory and/or identifier present")
