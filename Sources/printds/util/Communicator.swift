@@ -1,6 +1,6 @@
 //
 //  Communicator.swift
-//  
+//  printds
 //
 //  Created by Artem Zhukov on 15.01.22.
 //
@@ -9,10 +9,20 @@ import Foundation
 
 class Communicator: Decodable {
     
-    @Resolved private var console: Console!
-    @Resolved private var fileService: FileService!
-    @Resolved private var printService: PrintService!
-    @Resolved private var documentService: DocumentService!
+    private var console: Console
+    private var fileService: FileService
+    private var printService: PrintService
+    private var documentService: DocumentService
+    
+    init(console: Console,
+         fileService: FileService, printService: PrintService, documentService: DocumentService) {
+        self.console = console
+        self.fileService = fileService
+        self.printService = printService
+        self.documentService = documentService
+    }
+    
+    // MARK: - Public Methods
         
     /// Runs the program in the doublesided mode.
     /// - parameter args: The arguments of the program's run.
@@ -27,14 +37,22 @@ class Communicator: Decodable {
         if let output = args.output {
             let name = fileService.name(from: args.input)
             let (oddName, evenName) = ("\(name)-odd.pdf", "\(name)-even.pdf")
-            try fileService.save(split.odd, named: oddName, to: output)
-            try fileService.save(split.even, named: evenName, to: output)
-            console.info("First print \(oddName), then \(evenName).")
+            if let odd = split.odd {
+                try fileService.save(odd, named: oddName, to: output)
+            }
+            if let even = split.even {
+                try fileService.save(even, named: evenName, to: output)
+                console.info("First print \(oddName), then \(evenName).")
+            }
         } else {
-            try printService.print(split.odd)
-            console.info("Turn the printed pages over, and insert them into the paper tray.")
-            console.prompt("Press enter to continue.")
-            try printService.print(split.even)
+            if let odd = split.odd {
+                try printService.print(odd)
+            }
+            if let even = split.even {
+                console.info("Turn the printed pages over, and insert them into the paper tray.")
+                console.prompt("Press enter to continue.")
+                try printService.print(even)
+            }
         }
         // Finish
         let saved = document.pageCount - split.pageCount

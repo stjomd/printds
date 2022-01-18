@@ -1,6 +1,6 @@
 //
 //  Console.swift
-//  
+//  printds
 //
 //  Created by Artem Zhukov on 16.01.22.
 //
@@ -48,7 +48,7 @@ class Console: Decodable {
     /// Print a promt (in magenta) to the console, and wait for
     /// - parameter message: The message to be printed.
     @discardableResult func prompt(_ message: String) -> String? {
-        output(message, style: .magenta)
+        print(Style.magenta.rawValue + message + Style.reset.rawValue, terminator: "")
         return readLine()
     }
     

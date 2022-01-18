@@ -1,26 +1,38 @@
 //
 //  App.swift
-//  
+//  printds
 //
 //  Created by Artem Zhukov on 17.01.22.
 //
 
 import ArgumentParser
-import PDFKit
 
 struct App: ParsableCommand {
     
     // MARK: - Dependencies
     
-    @Resolved private var console: Console!
-    @Resolved private var communicator: Communicator!
+    private var console: Console
+    private var communicator: Communicator
+    
+    init() {
+        let console = Console()
+        let fileService = FileService()
+        // Inject
+        self.console = console
+        self.communicator = Communicator(
+            console: console,
+            fileService: fileService,
+            printService: PrintService(),
+            documentService: DocumentService(fileService: fileService)
+        )
+    }
     
     // MARK: - Argument parsing
     
     static var configuration = CommandConfiguration(
         commandName: "printds",
         abstract: "Print double sided documents manually with ease.",
-        version: "1.1.0"
+        version: "1.1.1"
     )
 
     @Argument(help: "The path to the document.")
@@ -38,7 +50,7 @@ struct App: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print a usual single-sided document.")
     var single: Bool = false
     
-    @Flag(name: .long, help: "Do not style output to the console.")
+    @Flag(name: .shortAndLong, help: "Do not style output to the console.")
     var plain: Bool = false
     
     // MARK: - Entry point

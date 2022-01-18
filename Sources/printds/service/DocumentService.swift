@@ -1,6 +1,6 @@
 //
 //  DocumentService.swift
-//  
+//  printds
 //
 //  Created by Artem Zhukov on 15.01.22.
 //
@@ -10,7 +10,13 @@ import PDFKit
 
 class DocumentService: Decodable {
     
-    @Resolved private var fileService: FileService!
+    private var fileService: FileService
+    
+    init(fileService: FileService) {
+        self.fileService = fileService
+    }
+    
+    // MARK: - Public methods
         
     /// Loads a PDF document from a specifie path.
     /// - parameters:
@@ -47,7 +53,11 @@ class DocumentService: Decodable {
                 docs.1.insert(document.page(at: count - shift - i)!, at: docs.1.pageCount)
             }
         }
-        return SplitPDFDocument(odd: docs.0, even: docs.1)
+        if document.pageCount == 1 {
+            return SplitPDFDocument(odd: docs.0, even: nil)
+        } else {
+            return SplitPDFDocument(odd: docs.0, even: docs.1)
+        }
     }
     
     // MARK: - Helpers
