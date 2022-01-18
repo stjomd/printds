@@ -1,6 +1,6 @@
 //
 //  Console.swift
-//  
+//  printds
 //
 //  Created by Artem Zhukov on 16.01.22.
 //

@@ -1,6 +1,6 @@
 //
 //  Communicator.swift
-//  
+//  printds
 //
 //  Created by Artem Zhukov on 15.01.22.
 //
