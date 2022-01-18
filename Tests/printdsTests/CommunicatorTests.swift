@@ -11,24 +11,28 @@ import PDFKit
 
 class CommunicatorTests: XCTestCase {
     
+    // Integration tests
+    
+    private var directory: String!
     private var identifier: String!
     
     private var printService: MockPrintService!
     private var communicator: Communicator!
 
     override func setUpWithError() throws {
-        let directory = try Shell.exec("pwd")
-        print(directory)
+        self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        let fileService = MockFileService(directory: directory, name: identifier)
-        self.printService = MockPrintService()
-        let documentService = MockDocumentService(mockFileService: fileService)
+        let fileService = FileService()
+        self.printService = MockPrintService() // doesn't open the print panel, but increments a counter
         self.communicator = Communicator(
             console: MockConsole(),
             fileService: fileService,
             printService: printService,
-            documentService: documentService
+            documentService: DocumentService(fileService: fileService)
         )
+        // Create a document
+        MockDocumentService.mockDocument(size: 5)
+            .write(to: URL(fileURLWithPath: directory).appendingPathComponent("\(identifier!).pdf"))
     }
 
     override func tearDownWithError() throws {
@@ -36,13 +40,14 @@ class CommunicatorTests: XCTestCase {
         self.communicator = nil
         self.printService = nil
         self.identifier = nil
+        self.directory = nil
     }
     
     // MARK: - Tests
 
     func test_doublesided_shouldPrintTwice_whenOutputIsNil() throws {
         XCTAssertEqual(printService.counter, 0)
-        let args = try Arguments(input: "\(identifier!).pdf", output: nil, from: nil, to: nil)
+        let args = try Arguments(input: "\(directory!)/\(identifier!).pdf", output: nil, from: nil, to: nil)
         try communicator.doublesided(args)
         XCTAssertEqual(printService.counter, 2)
     }
@@ -56,7 +61,7 @@ class CommunicatorTests: XCTestCase {
     
     func test_doublesided_shouldSaveTwoDocs_whenOutputNotNil() throws {
         XCTAssertEqual(printService.counter, 0)
-        let args = try Arguments(input: "\(identifier!).pdf", output: ".", from: nil, to: nil)
+        let args = try Arguments(input: "\(directory!)/\(identifier!).pdf", output: ".", from: nil, to: nil)
         try communicator.doublesided(args)
         XCTAssertEqual(printService.counter, 0)
         let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
@@ -76,7 +81,7 @@ class CommunicatorTests: XCTestCase {
     
     func test_singlessided_shouldPrintOnce_whenOutputIsNil() throws {
         XCTAssertEqual(printService.counter, 0)
-        let args = try Arguments(input: "\(identifier!).pdf", output: nil, from: nil, to: nil)
+        let args = try Arguments(input: "\(directory!)/\(identifier!).pdf", output: nil, from: nil, to: nil)
         try communicator.singlesided(args)
         XCTAssertEqual(printService.counter, 1)
     }
@@ -86,8 +91,8 @@ class CommunicatorTests: XCTestCase {
         let args = try Arguments(input: "\(identifier!).pdf", output: ".", from: nil, to: nil)
         try communicator.singlesided(args)
         XCTAssertEqual(printService.counter, 0)
-        XCTAssertEqual(try Shell.exec("ls \(identifier!)*.pdf"), "\(identifier!)-out.pdf")
-
+        let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
+        XCTAssertTrue(ls.contains("\(identifier!)-out.pdf"))
     }
 
 }
