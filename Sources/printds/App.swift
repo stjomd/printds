@@ -13,17 +13,17 @@ struct App: ParsableCommand {
     
     private var console: Console
     private var communicator: Communicator
-    
+
     init() {
         let console = Console()
         let fileService = FileService()
         // Inject
         self.console = console
         self.communicator = Communicator(
-            console: console,
-            fileService: fileService,
-            printService: PrintService(),
-            documentService: DocumentService(fileService: fileService)
+                console: console,
+                fileService: fileService,
+                printService: PrintService(),
+                documentService: DocumentService(fileService: fileService)
         )
     }
     
@@ -32,7 +32,7 @@ struct App: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "printds",
         abstract: "Print double sided documents manually with ease.",
-        version: "1.1.1"
+        version: "1.1.2"
     )
 
     @Argument(help: "The path to the document.")

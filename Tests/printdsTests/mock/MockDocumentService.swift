@@ -30,7 +30,7 @@ class MockDocumentService: DocumentService {
         if (upper < lower) {
             swap(&upper, &lower)
         }
-        return doc(size: upper - lower + 1)
+        return Self.mockDocument(size: upper - lower + 1)
     }
     
     override func split(_ document: PDFDocument) -> SplitPDFDocument {
@@ -41,15 +41,15 @@ class MockDocumentService: DocumentService {
             size = 1 + document.pageCount / 2
         }
         if document.pageCount == 1 {
-            return SplitPDFDocument(odd: doc(size: size), even: nil)
+            return SplitPDFDocument(odd: Self.mockDocument(size: size), even: nil)
         } else {
-            return SplitPDFDocument(odd: doc(size: size), even: doc(size: size))
+            return SplitPDFDocument(odd: Self.mockDocument(size: size), even: Self.mockDocument(size: size))
         }
     }
     
     // MARK: - Helpers
     
-    private func doc(size: Int) -> PDFDocument {
+    public static func mockDocument(size: Int) -> PDFDocument {
         let pdf = PDFDocument()
         for _ in 0..<size {
             pdf.insert(PDFPage(), at: 0)

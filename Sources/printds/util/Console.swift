@@ -48,7 +48,7 @@ class Console: Decodable {
     /// Print a promt (in magenta) to the console, and wait for
     /// - parameter message: The message to be printed.
     @discardableResult func prompt(_ message: String) -> String? {
-        print(Style.magenta.rawValue + message + Style.reset.rawValue, terminator: "")
+        output(message, terminator: "", style: .magenta)
         return readLine()
     }
     
@@ -62,12 +62,13 @@ class Console: Decodable {
     /// Output a message to the console.
     /// - parameters:
     ///   - message: The message to be printed.
+    ///   - terminator: The string to be appended to the end. A line break by default.
     ///   - style: The style to be applied to the message.
-    private func output(_ message: String, style: Style) {
+    private func output(_ message: String, terminator: String = "\n", style: Style) {
         if plain {
-            print(message)
+            print(message, terminator: terminator)
         } else {
-            print(style.rawValue + message + Style.reset.rawValue)
+            print(style.rawValue + message + Style.reset.rawValue, terminator: terminator)
         }
     }
     
