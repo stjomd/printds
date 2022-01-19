@@ -20,10 +20,10 @@ struct App: ParsableCommand {
         // Inject
         self.console = console
         self.communicator = Communicator(
-                console: console,
-                fileService: fileService,
-                printService: PrintService(),
-                documentService: DocumentService(fileService: fileService)
+            console: console,
+            fileService: fileService,
+            printService: PrintService(),
+            documentService: DocumentService(fileService: fileService)
         )
     }
     
