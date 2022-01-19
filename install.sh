@@ -7,6 +7,7 @@ then
 fi
 
 swift build -c release &&
+sudo rm /usr/local/bin/printds 2>/dev/null
 sudo cp .build/release/printds /usr/local/bin/printds &&
 rm -rf .build/release
 
