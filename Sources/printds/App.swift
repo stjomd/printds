@@ -13,23 +13,18 @@ struct App: ParsableCommand {
     
     private var console: Console
     private var communicator: Communicator
-    
-    // Default setup
+
     init() {
         let console = Console()
         let fileService = FileService()
-        let printService = PrintService()
-        let documentService = DocumentService(fileService: fileService)
-        let communicator = Communicator(
-            console: console,
-            fileService: fileService, printService: printService, documentService: documentService
-        )
-        self.init(console: console, communicator: communicator)
-    }
-    
-    init(console: Console, communicator: Communicator) {
+        // Inject
         self.console = console
-        self.communicator = communicator
+        self.communicator = Communicator(
+                console: console,
+                fileService: fileService,
+                printService: PrintService(),
+                documentService: DocumentService(fileService: fileService)
+        )
     }
     
     // MARK: - Argument parsing
