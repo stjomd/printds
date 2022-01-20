@@ -69,7 +69,8 @@ final class FileServiceTests: XCTestCase {
         XCTAssertEqual(try Shell.exec("ls \(fileName)"), fileName)
         // Restore - remove document
         try Shell.exec("rm \(fileName)")
-        XCTAssertNotEqual(try Shell.exec("ls \(fileName)"), fileName)
+        let ls = try Shell.exec("ls \(fileName)")
+        XCTAssertEqual(ls.split(separator: ":").last, " No such file or directory")
     }
     
     func test_save_shouldThrow_whenNotToDirectory() throws {
