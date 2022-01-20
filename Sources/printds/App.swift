@@ -37,7 +37,7 @@ struct App: ParsableCommand {
         It's also possible to save processed PDF files to print them later. \
         Moreover, you can specify which pages of the document should be processed.
         """,
-        version: "1.1.2"
+        version: "1.1.3"
     )
 
     @Argument(help: "The path to the document.")
