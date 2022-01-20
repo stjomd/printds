@@ -59,6 +59,6 @@ The code also comes with a shell script to aid with installation: if you've alre
 
 Otherwise, you can download the code and install immediately using the following command:
 ```
-git clone https://github.com/stjomd/printds.git && cd printds && sudo sh install.sh && cd .. && sudo rm -rf printds
+git clone https://github.com/stjomd/printds.git --depth 1 && cd printds && sudo sh install.sh && cd .. && sudo rm -rf printds
 ```
 You will be prompted to enter your password. Note that you need the Swift compiler.
