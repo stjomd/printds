@@ -42,11 +42,11 @@ Print all pages of `document.pdf`, starting with 3, in single-sided mode:
 printds -s document.pdf --from 3
 ```
 
-Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory `~/Desktop`, to be printed later:
+Save two documents, `document.odd.pdf` and `document.even.pdf`, to the directory `~/Desktop`, to be printed later:
 ```
 printds document.pdf -o ~/Desktop
 ```
-Save a document `document-out.pdf` to the desktop by removing all pages in `document.pdf` after the 4th one:
+Save a document `document.out.pdf` to the desktop by removing all pages after the 4th one:
 ```
 printds -s document.pdf --to 4 --output ~/Desktop
 ```
