@@ -2,7 +2,7 @@
 
 if [ $(id -u) -ne 0 ]
 then
-    echo "Root permissions required: run 'sudo sh install.sh'"
+    echo "Root permissions required: run 'sudo ./install.sh'"
     exit 1
 fi
 
