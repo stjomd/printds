@@ -9,7 +9,7 @@ fi
 swift build -c release &&
 sudo rm /usr/local/bin/printds 2>/dev/null
 sudo cp .build/release/printds /usr/local/bin/printds &&
-rm -rf .build/release
+rm -rf .build
 
 echo "Installation is completed."
 echo "Run 'printds --help' for more details."
