@@ -31,7 +31,12 @@ struct App: ParsableCommand {
     
     static var configuration = CommandConfiguration(
         commandName: "printds",
-        abstract: "Print double sided documents manually with ease.",
+        abstract: "A utility to assist with manual duplex printing.",
+        discussion: """
+        Apart from duplex printing, usual simplex printing is also supported. \
+        It's also possible to save processed PDF files to print them later. \
+        Moreover, you can specify which pages of the document should be processed.
+        """,
         version: "1.1.2"
     )
 
