@@ -18,7 +18,7 @@ class DocumentService: Decodable {
     
     // MARK: - Public methods
         
-    /// Loads a PDF document from a specifie path.
+    /// Loads a PDF document from a specified path.
     /// - parameters:
     ///   - path: The path to the document.
     ///   - from: The page to be treated as the first.

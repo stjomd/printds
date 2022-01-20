@@ -36,7 +36,7 @@ class Communicator: Decodable {
         // Start printing/saving
         if let output = args.output {
             let name = fileService.name(from: args.input)
-            let (oddName, evenName) = ("\(name)-odd.pdf", "\(name)-even.pdf")
+            let (oddName, evenName) = ("\(name).odd.pdf", "\(name).even.pdf")
             if let odd = split.odd {
                 try fileService.save(odd, named: oddName, to: output)
             }
@@ -69,7 +69,7 @@ class Communicator: Decodable {
         console.info("You will need \(document.pageCount) \(noun) of paper.")
         if let output = args.output {
             let name = fileService.name(from: args.input)
-            try fileService.save(document, named: "\(name)-out.pdf", to: output)
+            try fileService.save(document, named: "\(name).out.pdf", to: output)
         } else {
             try printService.print(document)
         }

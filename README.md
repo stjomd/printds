@@ -42,11 +42,11 @@ Print all pages of `document.pdf`, starting with 3, in single-sided mode:
 printds -s document.pdf --from 3
 ```
 
-Save two documents, `document-odd.pdf` and `document-even.pdf`, to the directory `~/Desktop`, to be printed later:
+Save two documents, `document.odd.pdf` and `document.even.pdf`, to the directory `~/Desktop`, to be printed later:
 ```
 printds document.pdf -o ~/Desktop
 ```
-Save a document `document-out.pdf` to the desktop by removing all pages in `document.pdf` after the 4th one:
+Save a document `document.out.pdf` to the desktop by removing all pages after the 4th one:
 ```
 printds -s document.pdf --to 4 --output ~/Desktop
 ```
@@ -59,6 +59,6 @@ The code also comes with a shell script to aid with installation: if you've alre
 
 Otherwise, you can download the code and install immediately using the following command:
 ```
-git clone https://github.com/stjomd/printds.git && cd printds && sudo sh install.sh && cd .. && sudo rm -rf printds
+git clone https://github.com/stjomd/printds.git --depth 1 && cd printds && sudo ./install.sh && cd .. && sudo rm -rf printds
 ```
 You will be prompted to enter your password. Note that you need the Swift compiler.

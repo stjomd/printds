@@ -20,10 +20,10 @@ struct App: ParsableCommand {
         // Inject
         self.console = console
         self.communicator = Communicator(
-                console: console,
-                fileService: fileService,
-                printService: PrintService(),
-                documentService: DocumentService(fileService: fileService)
+            console: console,
+            fileService: fileService,
+            printService: PrintService(),
+            documentService: DocumentService(fileService: fileService)
         )
     }
     
@@ -31,8 +31,13 @@ struct App: ParsableCommand {
     
     static var configuration = CommandConfiguration(
         commandName: "printds",
-        abstract: "Print double sided documents manually with ease.",
-        version: "1.1.2"
+        abstract: "A utility to assist with manual duplex printing.",
+        discussion: """
+        Apart from duplex printing, usual simplex printing is also supported. \
+        It's also possible to save processed PDF files to print them later. \
+        Moreover, you can specify which pages of the document should be processed.
+        """,
+        version: "1.1.3"
     )
 
     @Argument(help: "The path to the document.")
