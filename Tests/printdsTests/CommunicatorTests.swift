@@ -65,8 +65,8 @@ class CommunicatorTests: XCTestCase {
         try communicator.doublesided(args)
         XCTAssertEqual(printService.counter, 0)
         let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
-        XCTAssertTrue(ls.contains("\(identifier!)-odd.pdf"))
-        XCTAssertTrue(ls.contains("\(identifier!)-even.pdf"))
+        XCTAssertTrue(ls.contains("\(identifier!).odd.pdf"))
+        XCTAssertTrue(ls.contains("\(identifier!).even.pdf"))
     }
     
     func test_doublesided_shouldSaveOneDoc_whenOutputNotNilAndOnlyOnePage() throws {
@@ -75,8 +75,8 @@ class CommunicatorTests: XCTestCase {
         try communicator.doublesided(args)
         XCTAssertEqual(printService.counter, 0)
         let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
-        XCTAssertTrue(ls.contains("\(identifier!)-odd.pdf"))
-        XCTAssertFalse(ls.contains("\(identifier!)-even.pdf"))
+        XCTAssertTrue(ls.contains("\(identifier!).odd.pdf"))
+        XCTAssertFalse(ls.contains("\(identifier!).even.pdf"))
     }
     
     func test_singlessided_shouldPrintOnce_whenOutputIsNil() throws {
@@ -92,7 +92,7 @@ class CommunicatorTests: XCTestCase {
         try communicator.singlesided(args)
         XCTAssertEqual(printService.counter, 0)
         let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
-        XCTAssertTrue(ls.contains("\(identifier!)-out.pdf"))
+        XCTAssertTrue(ls.contains("\(identifier!).out.pdf"))
     }
 
 }

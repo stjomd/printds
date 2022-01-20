@@ -24,7 +24,7 @@ final class FileServiceTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        try Shell.exec("rm \(identifier!).pdf")
+        try Shell.exec("rm \(identifier!)*.pdf")
         self.directory = nil
         self.identifier = nil
         self.fileService = nil
