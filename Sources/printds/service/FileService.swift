@@ -10,6 +10,14 @@ import PDFKit
 
 class FileService: Decodable {
     
+    private var console: Console
+    
+    init(console: Console) {
+        self.console = console
+    }
+    
+    // MARK: - Public Methods
+    
     /// Checks whether a file specified by a path string exists in the local directory (current directory of the shell), or globally.
     /// - parameter path: The path to the file, a string.
     /// - returns: A URL associated with the file.
@@ -37,6 +45,7 @@ class FileService: Decodable {
     public func save(_ document: PDFDocument, named name: String, to path: String) throws {
         let directoryUrl = try self.locate(path)
         if try self.isDirectory(at: directoryUrl) {
+            try self.check(fileWithName: name, overwritesIn: directoryUrl)
             document.write(to: directoryUrl.appendingPathComponent(name))
         } else {
             throw Exception.because("The output path \(path) is not a directory.")
@@ -77,6 +86,28 @@ class FileService: Decodable {
             return check
         } else {
             throw Exception.because("Couldn't check whether the path \(url.path) is a directory.")
+        }
+    }
+    
+    /// Checks whether saving the file would overwrite an existing one; and prompts the user whether the file should be overwritten in this case.
+    /// If the user agreed, the method simply returns.
+    /// - parameters:
+    ///   - name: The name of the future file.
+    ///   - url: The URL of the directory where the file will be saved.
+    /// - throws: If the response didn't indicate that the overwrite should be performed, or if EOF was reached.
+    private func check(fileWithName name: String, overwritesIn url: URL) throws {
+        if FileManager.default.fileExists(atPath: url.appendingPathComponent(name).path) {
+            let response = console.prompt("The file with the name \(name) already exists. Overwrite? [y/n] ")?
+                .lowercased()
+            if let response = response {
+                if response.starts(with: "y") {
+                    return
+                } else {
+                    throw Exception.initiated("Declined to save \(name).")
+                }
+            } else {
+                throw Exception.because("Did not receive an answer to the prompt.")
+            }
         }
     }
     

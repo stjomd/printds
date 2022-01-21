@@ -16,7 +16,7 @@ struct App: ParsableCommand {
 
     init() {
         let console = Console()
-        let fileService = FileService()
+        let fileService = FileService(console: console)
         // Inject
         self.console = console
         self.communicator = Communicator(

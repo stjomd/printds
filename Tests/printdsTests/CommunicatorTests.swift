@@ -22,7 +22,7 @@ class CommunicatorTests: XCTestCase {
     override func setUpWithError() throws {
         self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        let fileService = FileService()
+        let fileService = FileService(console: MockConsole())
         self.printService = MockPrintService() // doesn't open the print panel, but increments a counter
         self.communicator = Communicator(
             console: MockConsole(),

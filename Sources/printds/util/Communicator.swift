@@ -34,16 +34,25 @@ class Communicator: Decodable {
         console.info("You will need \(split.pageCount) \(noun) of paper.")
         // Output
         if let odd = split.odd {
-            try self.output(odd, suffix: "odd", args: args)
+            do {
+                try self.output(odd, suffix: "odd", args: args)
+            } catch Exception.initiated(let message) {
+                console.error(message)
+            }
         }
         if let even = split.even {
-            if let _ = args.output {
-                console.info("First print the odd pages, then the even ones.")
-            } else {
+            if args.output == nil {
                 console.info("Turn the printed pages over, and insert them into the paper tray.")
                 console.prompt("Press enter to continue.")
             }
-            try self.output(even, suffix: "even", args: args)
+            do {
+                try self.output(even, suffix: "even", args: args)
+            } catch Exception.initiated(let message) {
+                console.error(message)
+            }
+            if args.output != nil {
+                console.info("First print the odd pages, then the even ones.")
+            }
         }
         // Finish
         let saved = document.pageCount - split.pageCount
@@ -59,7 +68,12 @@ class Communicator: Decodable {
         let noun = (document.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(document.pageCount) \(noun) of paper.")
         // Output
-        try self.output(document, suffix: "out", args: args)
+        do {
+            try self.output(document, suffix: "out", args: args)
+        } catch Exception.initiated(let message) {
+            console.error(message)
+            return
+        }
         console.success("Done.")
     }
     

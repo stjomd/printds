@@ -19,7 +19,7 @@ final class FileServiceTests: XCTestCase {
     override func setUpWithError() throws {
         self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        self.fileService = FileService()
+        self.fileService = FileService(console: MockConsole())
         try Shell.exec("touch \(identifier!).pdf")
     }
 

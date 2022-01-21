@@ -17,7 +17,7 @@ class MockFileService: FileService {
     init(directory: String, name: String) {
         self.directory = directory
         self.name = name
-        super.init()
+        super.init(console: MockConsole())
     }
     
     required init(from decoder: Decoder) throws {
