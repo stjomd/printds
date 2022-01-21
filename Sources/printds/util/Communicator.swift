@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PDFKit.PDFDocument
 
 class Communicator: Decodable {
     
@@ -14,8 +15,7 @@ class Communicator: Decodable {
     private var printService: PrintService
     private var documentService: DocumentService
     
-    init(console: Console,
-         fileService: FileService, printService: PrintService, documentService: DocumentService) {
+    init(console: Console, fileService: FileService, printService: PrintService, documentService: DocumentService) {
         self.console = console
         self.fileService = fileService
         self.printService = printService
@@ -28,31 +28,22 @@ class Communicator: Decodable {
     /// - parameter args: The arguments of the program's run.
     /// - throws: If an error occurs during execution.
     public func doublesided(_ args: Arguments) throws {
-        // Build documents
         let document = try documentService.document(path: args.input, from: args.from, to: args.to)
         let split = documentService.split(document)
         let noun = (split.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(split.pageCount) \(noun) of paper.")
-        // Start printing/saving
-        if let output = args.output {
-            let name = fileService.name(from: args.input)
-            let (oddName, evenName) = ("\(name).odd.pdf", "\(name).even.pdf")
-            if let odd = split.odd {
-                try fileService.save(odd, named: oddName, to: output)
-            }
-            if let even = split.even {
-                try fileService.save(even, named: evenName, to: output)
-                console.info("First print \(oddName), then \(evenName).")
-            }
-        } else {
-            if let odd = split.odd {
-                try printService.print(odd)
-            }
-            if let even = split.even {
+        // Output
+        if let odd = split.odd {
+            try self.output(odd, suffix: "odd", args: args)
+        }
+        if let even = split.even {
+            if let _ = args.output {
+                console.info("First print the odd pages, then the even ones.")
+            } else {
                 console.info("Turn the printed pages over, and insert them into the paper tray.")
                 console.prompt("Press enter to continue.")
-                try printService.print(even)
             }
+            try self.output(even, suffix: "even", args: args)
         }
         // Finish
         let saved = document.pageCount - split.pageCount
@@ -67,13 +58,26 @@ class Communicator: Decodable {
         let document = try documentService.document(path: args.input, from: args.from, to: args.to)
         let noun = (document.pageCount == 1) ? "sheet" : "sheets"
         console.info("You will need \(document.pageCount) \(noun) of paper.")
+        // Output
+        try self.output(document, suffix: "out", args: args)
+        console.success("Done.")
+    }
+    
+    // MARK: - Helpers
+    
+    /// Either prints or saves the document, depending on the program's arguments.
+    /// - parameters:
+    ///   - document: The document to be output.
+    ///   - suffix: The suffix appended to the document's name when saving.
+    ///   - args: The program's arguments.
+    /// - throws: An exception is thrown if something went wrong while printing/saving.
+    private func output(_ document: PDFDocument, suffix: String, args: Arguments) throws {
         if let output = args.output {
-            let name = fileService.name(from: args.input)
-            try fileService.save(document, named: "\(name).out.pdf", to: output)
+            let name = fileService.name(from: args.input) + "." + suffix + ".pdf"
+            try fileService.save(document, named: name, to: output)
         } else {
             try printService.print(document)
         }
-        console.success("Done.")
     }
     
 }
