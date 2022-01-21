@@ -24,7 +24,7 @@ class MockConsole: Console {
     
     override func prompt(_ message: String) -> String? {
         super.log(message)
-        return nil
+        return "n"
     }
     
 }

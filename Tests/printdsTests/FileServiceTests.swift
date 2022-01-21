@@ -74,9 +74,16 @@ final class FileServiceTests: XCTestCase {
     }
     
     func test_save_shouldThrow_whenNotToDirectory() throws {
-        try Shell.exec("touch x.pdf")
-        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "x.pdf"))
-        try Shell.exec("rm x.pdf")
+        try Shell.exec("touch \(identifier!)-x.pdf")
+        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "\(identifier!)-x.pdf"))
+        try Shell.exec("rm \(identifier!)-x.pdf")
+    }
+    
+    func test_save_shouldThrow_whenDeclinedToOverwrite() throws {
+        let fileName = "\(identifier!)-y.pdf"
+        XCTAssertNoThrow(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        try Shell.exec("rm \(fileName)")
     }
     
     func test_name_shouldAlwaysReturnName() throws {
