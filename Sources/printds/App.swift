@@ -5,6 +5,7 @@
 //  Created by Artem Zhukov on 17.01.22.
 //
 
+import Darwin
 import ArgumentParser
 
 struct App: ParsableCommand {
@@ -71,6 +72,7 @@ struct App: ParsableCommand {
             }
         } catch Exception.because(let message) {
             console.error("Error: \(message)")
+            Darwin.exit(1)
         }
     }
     
