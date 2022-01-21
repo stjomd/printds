@@ -55,7 +55,7 @@ printds -s document.pdf --to 4 --output ~/Desktop
 You will need to compile the source code, after which you can either add the executable to `/usr/local/bin` or run
 it in any other directory.
 The code also comes with a shell script to aid with installation: if you've already downloaded the source code, run
-`sudo sh install.sh`.
+`sudo ./install.sh`.
 
 Otherwise, you can download the code and install immediately using the following command:
 ```
