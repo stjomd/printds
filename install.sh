@@ -11,5 +11,5 @@ sudo rm /usr/local/bin/printds 2>/dev/null
 sudo cp .build/release/printds /usr/local/bin/printds &&
 rm -rf .build
 
-echo "Installation is completed."
-echo "Run 'printds --help' for more details."
+echo "Installation is complete."
+echo "See 'printds --help' for more details."
