@@ -73,7 +73,7 @@ class Communicator: Decodable {
     /// - throws: An exception is thrown if something went wrong while printing/saving.
     private func output(_ document: PDFDocument, suffix: String, args: Arguments) throws {
         if let output = args.output {
-            let name = fileService.name(from: args.input) + "." + suffix + ".pdf"
+            let name = fileService.name(from: args.input) + ".\(suffix).pdf"
             try fileService.save(document, named: name, to: output)
         } else {
             try printService.print(document)
