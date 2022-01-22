@@ -6,10 +6,12 @@
 //
 
 import Foundation
-import PDFKit
 @testable import printds
 
 class MockConsole: Console {
+    
+    /// The response to the prompt.
+    var response: String?
     
     override init() {
         super.init()
@@ -24,7 +26,7 @@ class MockConsole: Console {
     
     override func prompt(_ message: String) -> String? {
         super.log(message)
-        return "n"
+        return response
     }
     
 }
