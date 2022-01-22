@@ -57,13 +57,11 @@ class FileService: Decodable {
     /// - parameter path: The path to the file or directory.
     /// - returns: The name, or an empty string if it couldn't be determined.
     public func name(from path: String) -> String {
-        var dotIndex = path.endIndex
+        let dotIndex = path.lastIndex(of: ".") ?? path.endIndex
         // Attempt to return the name of the file (.../dir/doc.pdf -> doc)
         for i in stride(from: path.count - 1, to: 0, by: -1) {
             let index = path.index(path.startIndex, offsetBy: i)
-            if path[index] == "." {
-                dotIndex = index
-            } else if path[index] == "/" {
+            if path[index] == "/" {
                 let cutIndex = path.index(index, offsetBy: 1)
                 return String(path[cutIndex..<dotIndex])
             }
@@ -98,9 +96,8 @@ class FileService: Decodable {
     /// - throws: If the response didn't indicate that the overwrite should be performed, or if EOF was reached.
     private func check(fileWithName name: String, overwritesIn url: URL) throws {
         if FileManager.default.fileExists(atPath: url.appendingPathComponent(name).path) {
-            let response = console.prompt("The file with the name \(name) already exists. Overwrite? [y/n] ")?
-                .lowercased()
-            if let response = response {
+            let response = console.prompt("The file with the name \(name) already exists. Overwrite? [y/n] ")
+            if let response = response?.lowercased() {
                 if response.starts(with: "y") {
                     return
                 } else {

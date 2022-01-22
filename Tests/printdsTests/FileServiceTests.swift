@@ -88,11 +88,11 @@ final class FileServiceTests: XCTestCase {
     
     func test_name_shouldAlwaysReturnName() throws {
         XCTAssertEqual(fileService.name(from: "hello.pdf"), "hello")
-        XCTAssertEqual(fileService.name(from: "hello.out.pdf"), "hello")
+        XCTAssertEqual(fileService.name(from: "hello.out.pdf"), "hello.out")
         XCTAssertEqual(fileService.name(from: "dir/document.pdf"), "document")
-        XCTAssertEqual(fileService.name(from: "./folder/image.png"), "image")
+        XCTAssertEqual(fileService.name(from: "./folder/image.image.png"), "image.image")
         XCTAssertEqual(fileService.name(from: "../ordner/song.mp3"), "song")
-        XCTAssertEqual(fileService.name(from: "~/Desktop/Folder/presentation.pdf"), "presentation")
+        XCTAssertEqual(fileService.name(from: "~/Desktop/Folder/presentation.ppt.pdf"), "presentation.ppt")
         XCTAssertEqual(fileService.name(from: "something"), "something")
         XCTAssertEqual(fileService.name(from: ""), "")
     }
