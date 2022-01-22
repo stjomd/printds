@@ -33,7 +33,7 @@ class FileService: Decodable {
         } else if FileManager.default.fileExists(atPath: globalUrl.path) {
             return globalUrl
         } else {
-            throw Exception.because("No such file or directory: \(path).")
+            throw Exception.fatal("No such file or directory: \(path).")
         }
     }
     
@@ -49,7 +49,7 @@ class FileService: Decodable {
             try self.check(fileWithName: name, overwritesIn: directoryUrl)
             document.write(to: directoryUrl.appendingPathComponent(name))
         } else {
-            throw Exception.because("The output path \(path) is not a directory.")
+            throw Exception.fatal("The output path \(path) is not a directory.")
         }
     }
     
@@ -84,7 +84,7 @@ class FileService: Decodable {
         if let check = try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory {
             return check
         } else {
-            throw Exception.because("Couldn't check whether the path \(url.path) is a directory.")
+            throw Exception.fatal("Couldn't check whether the path \(url.path) is a directory.")
         }
     }
     
@@ -104,7 +104,7 @@ class FileService: Decodable {
                     throw Exception.initiated("Declined to save \(name).")
                 }
             } else {
-                throw Exception.because("Did not receive an answer to the prompt.")
+                throw Exception.fatal("Did not receive an answer to the prompt.")
             }
         }
     }

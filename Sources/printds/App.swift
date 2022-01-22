@@ -71,7 +71,7 @@ struct App: ParsableCommand {
             } else {
                 try communicator.doublesided(args)
             }
-        } catch Exception.because(let message) {
+        } catch Exception.fatal(let message) {
             console.error("Error: \(message)")
             Darwin.exit(1)
         }

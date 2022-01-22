@@ -23,7 +23,7 @@ class MockDocumentService: DocumentService {
     
     override func document(path: String, from: Int?, to: Int?) throws -> PDFDocument {
         if let from = from, let to = to, from > to {
-            throw Exception.because("Invalid parameters (from > to)")
+            throw Exception.fatal("Invalid parameters (from > to)")
         }
         var lower = from ?? 1
         var upper = to ?? 15

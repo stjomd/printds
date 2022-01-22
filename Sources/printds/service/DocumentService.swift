@@ -29,7 +29,7 @@ class DocumentService: Decodable {
     public func document(path: String, from: Int?, to: Int?) throws -> PDFDocument {
         let url = try fileService.locate(path)
         guard let document = PDFDocument(url: url) else {
-            throw Exception.because("Couldn't open the document at \(path).")
+            throw Exception.fatal("Couldn't open the document at \(path).")
         }
         try cut(document, from: from, to: to)
         return document
@@ -79,9 +79,9 @@ class DocumentService: Decodable {
             upperBound = to
         }
         if lowerBound < 1 || lowerBound > document.pageCount {
-            throw Exception.because("The value of option 'from' (\(lowerBound)) is out of bounds.")
+            throw Exception.fatal("The value of option 'from' (\(lowerBound)) is out of bounds.")
         } else if upperBound < 1 || upperBound > document.pageCount {
-            throw Exception.because("The value of option 'to' (\(upperBound)) is out of bounds.")
+            throw Exception.fatal("The value of option 'to' (\(upperBound)) is out of bounds.")
         }
         // Cut document
         while (document.pageCount > upperBound) {
