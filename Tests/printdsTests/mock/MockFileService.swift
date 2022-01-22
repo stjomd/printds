@@ -14,10 +14,10 @@ class MockFileService: FileService {
     private let directory: String
     private let name: String
     
-    init(directory: String, name: String) {
+    init(directory: String, name: String, console: Console) {
         self.directory = directory
         self.name = name
-        super.init(console: MockConsole())
+        super.init(console: console)
     }
     
     required init(from decoder: Decoder) throws {
