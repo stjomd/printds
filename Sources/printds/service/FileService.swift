@@ -8,6 +8,7 @@
 import Foundation
 import PDFKit
 
+/// An object that communicates with the file system.
 class FileService: Decodable {
     
     private var console: Console

@@ -8,6 +8,7 @@
 import Darwin
 import ArgumentParser
 
+/// A struct that is responsible from parsing the arguments when starting from the console.
 struct App: ParsableCommand {
     
     // MARK: - Dependencies

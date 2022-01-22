@@ -8,6 +8,7 @@
 import Foundation
 import PDFKit.PDFDocument
 
+/// An object that is responsible for the main logic of the application.
 class Communicator: Decodable {
     
     private var console: Console

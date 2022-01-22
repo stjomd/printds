@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An object that is responsible for printing to the console.
 class Console: Decodable {
     
     /// The enum that stores all required styles. Raw values correspond to the ANSI codes.
