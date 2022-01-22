@@ -5,8 +5,10 @@
 //  Created by Artem Zhukov on 17.01.22.
 //
 
+import Darwin
 import ArgumentParser
 
+/// A struct that is responsible from parsing the arguments when starting from the console.
 struct App: ParsableCommand {
     
     // MARK: - Dependencies
@@ -16,7 +18,7 @@ struct App: ParsableCommand {
 
     init() {
         let console = Console()
-        let fileService = FileService()
+        let fileService = FileService(console: console)
         // Inject
         self.console = console
         self.communicator = Communicator(
@@ -37,7 +39,7 @@ struct App: ParsableCommand {
         It's also possible to save processed PDF files to print them later. \
         Moreover, you can specify which pages of the document should be processed.
         """,
-        version: "1.1.3"
+        version: "1.1.4"
     )
 
     @Argument(help: "The path to the document.")
@@ -71,6 +73,7 @@ struct App: ParsableCommand {
             }
         } catch Exception.because(let message) {
             console.error("Error: \(message)")
+            Darwin.exit(1)
         }
     }
     

@@ -8,6 +8,7 @@
 import Foundation
 import PDFKit
 
+/// An object that is responsible for printing PDF documents.
 class PrintService: Decodable {
     
     /// Sends a PDF document to the OS's printer.

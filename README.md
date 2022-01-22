@@ -28,27 +28,15 @@ Print `document.pdf` in duplex mode:
 ```
 printds document.pdf
 ```
+
 Print pages 2, 3, 4 and 5 of `document.pdf` in duplex mode:
 ```
 printds document.pdf --from 2 --to 5
 ```
 
-Print `document.pdf` in single-sided mode:
+Save `document.out.pdf`, which contains the first 4 pages of `document.pdf`, to the desktop:
 ```
-printds -s document.pdf
-```
-Print all pages of `document.pdf`, starting with 3, in single-sided mode:
-```
-printds -s document.pdf --from 3
-```
-
-Save two documents, `document.odd.pdf` and `document.even.pdf`, to the directory `~/Desktop`, to be printed later:
-```
-printds document.pdf -o ~/Desktop
-```
-Save a document `document.out.pdf` to the desktop by removing all pages after the 4th one:
-```
-printds -s document.pdf --to 4 --output ~/Desktop
+printds document.pdf -s --to 4 -o ~/Desktop
 ```
 
 ## Installation

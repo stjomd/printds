@@ -8,6 +8,7 @@
 import Foundation
 import PDFKit
 
+// An object that encapsulates up to two PDF documents.
 class SplitPDFDocument {
     
     /// The document with the odd pages.

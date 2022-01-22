@@ -8,6 +8,7 @@
 import Foundation
 import PDFKit
 
+/// An object that is responsibele for loading and processing PDF documents.
 class DocumentService: Decodable {
     
     private var fileService: FileService

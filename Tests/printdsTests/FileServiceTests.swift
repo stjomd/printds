@@ -19,7 +19,7 @@ final class FileServiceTests: XCTestCase {
     override func setUpWithError() throws {
         self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        self.fileService = FileService()
+        self.fileService = FileService(console: MockConsole())
         try Shell.exec("touch \(identifier!).pdf")
     }
 
@@ -74,13 +74,21 @@ final class FileServiceTests: XCTestCase {
     }
     
     func test_save_shouldThrow_whenNotToDirectory() throws {
-        try Shell.exec("touch x.pdf")
-        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "x.pdf"))
-        try Shell.exec("rm x.pdf")
+        try Shell.exec("touch \(identifier!)-x.pdf")
+        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: "file.pdf", to: "\(identifier!)-x.pdf"))
+        try Shell.exec("rm \(identifier!)-x.pdf")
+    }
+    
+    func test_save_shouldThrow_whenDeclinedToOverwrite() throws {
+        let fileName = "\(identifier!)-y.pdf"
+        XCTAssertNoThrow(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        XCTAssertThrowsError(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        try Shell.exec("rm \(fileName)")
     }
     
     func test_name_shouldAlwaysReturnName() throws {
         XCTAssertEqual(fileService.name(from: "hello.pdf"), "hello")
+        XCTAssertEqual(fileService.name(from: "hello.out.pdf"), "hello")
         XCTAssertEqual(fileService.name(from: "dir/document.pdf"), "document")
         XCTAssertEqual(fileService.name(from: "./folder/image.png"), "image")
         XCTAssertEqual(fileService.name(from: "../ordner/song.mp3"), "song")
