@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import PDFKit
+import PDFKit.PDFDocument
 @testable import printds
 
 class DocumentServiceTests: XCTestCase {

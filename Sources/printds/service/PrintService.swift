@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PDFKit
+import PDFKit.PDFDocument
 
 /// An object that is responsible for printing PDF documents.
 class PrintService: Decodable {

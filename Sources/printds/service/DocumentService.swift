@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PDFKit
+import PDFKit.PDFDocument
 
 /// An object that is responsibele for loading and processing PDF documents.
 class DocumentService: Decodable {

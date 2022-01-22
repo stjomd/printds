@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PDFKit
+import PDFKit.PDFDocument
 @testable import printds
 
 class MockDocumentService: DocumentService {

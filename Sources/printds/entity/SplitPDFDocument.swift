@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PDFKit
+import PDFKit.PDFDocument
 
 // An object that encapsulates up to two PDF documents.
 class SplitPDFDocument {

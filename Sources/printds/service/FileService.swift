@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PDFKit
+import PDFKit.PDFDocument
 
 /// An object that communicates with the file system.
 class FileService: Decodable {
