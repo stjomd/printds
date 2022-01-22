@@ -33,7 +33,7 @@ class FileService: Decodable {
         } else if FileManager.default.fileExists(atPath: globalUrl.path) {
             return globalUrl
         } else {
-            throw Exception.because("The path \(path) doesn't exist.")
+            throw Exception.because("No such file or directory: \(path).")
         }
     }
     
