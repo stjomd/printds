@@ -20,7 +20,7 @@ class DocumentServiceTests: XCTestCase {
     override func setUpWithError() throws {
         let directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        let fileService = MockFileService(directory: directory, name: identifier, console: MockConsole())
+        let fileService = MockFileService(directory: directory, name: identifier, console: TestableConsole())
         self.documentService = DocumentService(fileService: fileService)
         // Save a document
         self.documentOdd = MockDocumentService.mockDocument(size: 5)

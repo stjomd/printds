@@ -22,10 +22,10 @@ class CommunicatorTests: XCTestCase {
     override func setUpWithError() throws {
         self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        let fileService = FileService(console: MockConsole())
+        let fileService = FileService(console: TestableConsole())
         self.printService = MockPrintService() // doesn't open the print panel, but increments a counter
         self.communicator = Communicator(
-            console: MockConsole(),
+            console: TestableConsole(),
             fileService: fileService,
             printService: printService,
             documentService: DocumentService(fileService: fileService)
@@ -93,6 +93,10 @@ class CommunicatorTests: XCTestCase {
         XCTAssertEqual(printService.counter, 0)
         let ls = try Shell.exec("ls \(identifier!)*.pdf").split(separator: "\n")
         XCTAssertTrue(ls.contains("\(identifier!).out.pdf"))
+    }
+    
+    func test_singlesided_shouldNotThrow_whenDeclinedToOverwrite() throws {
+        
     }
 
 }

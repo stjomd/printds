@@ -14,13 +14,13 @@ final class FileServiceTests: XCTestCase {
     private var directory: String!
     private var identifier: String!
     
-    private var console: MockConsole!
+    private var console: TestableConsole!
     private var fileService: FileService!
     
     override func setUpWithError() throws {
         self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        self.console = MockConsole()
+        self.console = TestableConsole()
         self.fileService = FileService(console: self.console)
         try Shell.exec("touch \(identifier!).pdf")
     }

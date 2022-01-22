@@ -1,5 +1,5 @@
 //
-//  MockConsole.swift
+//  TestableConsole.swift
 //  printdsTests
 //
 //  Created by Artem Zhukov on 18.01.22.
@@ -8,7 +8,7 @@
 import Foundation
 @testable import printds
 
-class MockConsole: Console {
+class TestableConsole: Console {
     
     /// The response to the prompt.
     var response: String?
