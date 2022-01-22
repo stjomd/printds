@@ -39,7 +39,7 @@ struct App: ParsableCommand {
         It's also possible to save processed PDF files to print them later. \
         Moreover, you can specify which pages of the document should be processed.
         """,
-        version: "1.1.4"
+        version: "1.1.5"
     )
 
     @Argument(help: "The path to the document.")
@@ -71,7 +71,7 @@ struct App: ParsableCommand {
             } else {
                 try communicator.doublesided(args)
             }
-        } catch Exception.because(let message) {
+        } catch Exception.fatal(let message) {
             console.error("Error: \(message)")
             Darwin.exit(1)
         }

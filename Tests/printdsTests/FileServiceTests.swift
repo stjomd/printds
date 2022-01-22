@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import PDFKit
+import PDFKit.PDFDocument
 @testable import printds
 
 final class FileServiceTests: XCTestCase {
@@ -14,12 +14,14 @@ final class FileServiceTests: XCTestCase {
     private var directory: String!
     private var identifier: String!
     
+    private var console: TestableConsole!
     private var fileService: FileService!
     
     override func setUpWithError() throws {
         self.directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        self.fileService = FileService(console: MockConsole())
+        self.console = TestableConsole()
+        self.fileService = FileService(console: self.console)
         try Shell.exec("touch \(identifier!).pdf")
     }
 
@@ -27,6 +29,7 @@ final class FileServiceTests: XCTestCase {
         try Shell.exec("rm \(identifier!)*.pdf")
         self.directory = nil
         self.identifier = nil
+        self.console = nil
         self.fileService = nil
     }
     
@@ -82,17 +85,26 @@ final class FileServiceTests: XCTestCase {
     func test_save_shouldThrow_whenDeclinedToOverwrite() throws {
         let fileName = "\(identifier!)-y.pdf"
         XCTAssertNoThrow(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        self.console.response = "no"
         XCTAssertThrowsError(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        try Shell.exec("rm \(fileName)")
+    }
+    
+    func test_save_shouldNotThrow_whenAgreedToOverwrite() throws {
+        let fileName = "\(identifier!)-y.pdf"
+        XCTAssertNoThrow(try fileService.save(PDFDocument(), named: fileName, to: directory!))
+        self.console.response = "yes"
+        XCTAssertNoThrow(try fileService.save(PDFDocument(), named: fileName, to: directory!))
         try Shell.exec("rm \(fileName)")
     }
     
     func test_name_shouldAlwaysReturnName() throws {
         XCTAssertEqual(fileService.name(from: "hello.pdf"), "hello")
-        XCTAssertEqual(fileService.name(from: "hello.out.pdf"), "hello")
+        XCTAssertEqual(fileService.name(from: "hello.out.pdf"), "hello.out")
         XCTAssertEqual(fileService.name(from: "dir/document.pdf"), "document")
-        XCTAssertEqual(fileService.name(from: "./folder/image.png"), "image")
+        XCTAssertEqual(fileService.name(from: "./folder/image.image.png"), "image.image")
         XCTAssertEqual(fileService.name(from: "../ordner/song.mp3"), "song")
-        XCTAssertEqual(fileService.name(from: "~/Desktop/Folder/presentation.pdf"), "presentation")
+        XCTAssertEqual(fileService.name(from: "~/Desktop/Folder/presentation.ppt.pdf"), "presentation.ppt")
         XCTAssertEqual(fileService.name(from: "something"), "something")
         XCTAssertEqual(fileService.name(from: ""), "")
     }

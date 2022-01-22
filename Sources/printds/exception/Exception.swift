@@ -9,6 +9,6 @@ import Foundation
 
 /// The error type used in the `printds` application.
 enum Exception: Error {
-    case because(String)    // General errors
-    case initiated(String)  // User initiated command to stop
+    case fatal(String)      // Finishes execution immediately, exits with code 1
+    case initiated(String)  // User initiated wish to stop, exits with code 0
 }

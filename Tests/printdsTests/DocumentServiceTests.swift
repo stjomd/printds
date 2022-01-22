@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import PDFKit
+import PDFKit.PDFDocument
 @testable import printds
 
 class DocumentServiceTests: XCTestCase {
@@ -20,7 +20,7 @@ class DocumentServiceTests: XCTestCase {
     override func setUpWithError() throws {
         let directory = try Shell.exec("pwd")
         self.identifier = UUID().description
-        let fileService = MockFileService(directory: directory, name: identifier)
+        let fileService = MockFileService(directory: directory, name: identifier, console: TestableConsole())
         self.documentService = DocumentService(fileService: fileService)
         // Save a document
         self.documentOdd = MockDocumentService.mockDocument(size: 5)

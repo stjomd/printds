@@ -1,15 +1,17 @@
 //
-//  MockConsole.swift
+//  TestableConsole.swift
 //  printdsTests
 //
 //  Created by Artem Zhukov on 18.01.22.
 //
 
 import Foundation
-import PDFKit
 @testable import printds
 
-class MockConsole: Console {
+class TestableConsole: Console {
+    
+    /// The response to the prompt.
+    var response: String?
     
     override init() {
         super.init()
@@ -24,7 +26,7 @@ class MockConsole: Console {
     
     override func prompt(_ message: String) -> String? {
         super.log(message)
-        return "n"
+        return response
     }
     
 }

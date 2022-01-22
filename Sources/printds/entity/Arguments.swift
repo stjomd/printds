@@ -31,7 +31,7 @@ struct Arguments {
     private func validate() throws {
         if let from = from, let to = to, from > to {
             throw Exception
-                .because("The value of option 'from' (\(from)) is larger than the value of 'to' (\(to)).")
+                .fatal("The value of option 'from' (\(from)) is larger than the value of 'to' (\(to)).")
         }
     }
     

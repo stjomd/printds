@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PDFKit
+import PDFKit.PDFDocument
 
 /// An object that communicates with the file system.
 class FileService: Decodable {
@@ -33,7 +33,7 @@ class FileService: Decodable {
         } else if FileManager.default.fileExists(atPath: globalUrl.path) {
             return globalUrl
         } else {
-            throw Exception.because("The path \(path) doesn't exist.")
+            throw Exception.fatal("No such file or directory: \(path).")
         }
     }
     
@@ -49,7 +49,7 @@ class FileService: Decodable {
             try self.check(fileWithName: name, overwritesIn: directoryUrl)
             document.write(to: directoryUrl.appendingPathComponent(name))
         } else {
-            throw Exception.because("The output path \(path) is not a directory.")
+            throw Exception.fatal("The output path \(path) is not a directory.")
         }
     }
     
@@ -57,13 +57,11 @@ class FileService: Decodable {
     /// - parameter path: The path to the file or directory.
     /// - returns: The name, or an empty string if it couldn't be determined.
     public func name(from path: String) -> String {
-        var dotIndex = path.endIndex
+        let dotIndex = path.lastIndex(of: ".") ?? path.endIndex
         // Attempt to return the name of the file (.../dir/doc.pdf -> doc)
         for i in stride(from: path.count - 1, to: 0, by: -1) {
             let index = path.index(path.startIndex, offsetBy: i)
-            if path[index] == "." {
-                dotIndex = index
-            } else if path[index] == "/" {
+            if path[index] == "/" {
                 let cutIndex = path.index(index, offsetBy: 1)
                 return String(path[cutIndex..<dotIndex])
             }
@@ -86,7 +84,7 @@ class FileService: Decodable {
         if let check = try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory {
             return check
         } else {
-            throw Exception.because("Couldn't check whether the path \(url.path) is a directory.")
+            throw Exception.fatal("Couldn't check whether the path \(url.path) is a directory.")
         }
     }
     
@@ -98,16 +96,15 @@ class FileService: Decodable {
     /// - throws: If the response didn't indicate that the overwrite should be performed, or if EOF was reached.
     private func check(fileWithName name: String, overwritesIn url: URL) throws {
         if FileManager.default.fileExists(atPath: url.appendingPathComponent(name).path) {
-            let response = console.prompt("The file with the name \(name) already exists. Overwrite? [y/n] ")?
-                .lowercased()
-            if let response = response {
+            let response = console.prompt("The file with the name \(name) already exists. Overwrite? [y/n] ")
+            if let response = response?.lowercased() {
                 if response.starts(with: "y") {
                     return
                 } else {
                     throw Exception.initiated("Declined to save \(name).")
                 }
             } else {
-                throw Exception.because("Did not receive an answer to the prompt.")
+                throw Exception.fatal("Did not receive an answer to the prompt.")
             }
         }
     }
