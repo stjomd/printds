@@ -36,7 +36,7 @@ printds document.pdf --from 2 --to 5
 
 Save `document.out.pdf`, which contains the first 4 pages of `document.pdf`, to the desktop:
 ```
-printds document.pdf --to 4 -s -o ~/Desktop
+printds document.pdf -s --to 4 -o ~/Desktop
 ```
 
 ## Installation
